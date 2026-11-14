@@ -9,7 +9,6 @@ content/stories/*
 content/carousels/*
 content/proof-bank/*
 !**/.gitkeep
-brand/copy-rules-pack
 rules/clients/
 tools/research/data/*
 *.mp4

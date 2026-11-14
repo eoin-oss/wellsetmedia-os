@@ -8,12 +8,12 @@ Footage, client folders and finished work are not in here. They live in Frame / 
 
 ```bash
 git clone https://github.com/eoin-oss/wellsetmedia-os ~/wellsetmedia-os
-# team only: the private pack (copy rules + client rules) sits next to it
+# team only: the private pack (client rules + examples) sits next to it
 git clone https://github.com/eoin-oss/wellsetmedia-os-private ~/wellsetmedia-os-private
 cd ~/wellsetmedia-os && ./install.sh
 ```
 
-`install.sh` links every skill into `~/.claude/skills/`, sets `WSM_HOME` to this folder, and links the private copy rules pack and client rules in if you have them. Run it again after every `git pull` (it's safe to re-run).
+`install.sh` links every skill into `~/.claude/skills/`, sets `WSM_HOME` to this folder, and links the private client rules in if you have them. Run it again after every `git pull` (it's safe to re-run).
 
 The editor also needs **DaVinci Resolve Studio**, `brew install ffmpeg whisper-cpp` and `pip3 install pillow`. See `tools/auto-editor/README.md`.
 

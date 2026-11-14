@@ -4,7 +4,7 @@ This repo is the WellSetMedia team's shared system. `$WSM_HOME` = this folder. E
 with `$WSM_HOME/` resolves here.
 
 ## Before writing anything (scripts, captions, hooks, DMs, audits, carousels, stories)
-1. `brand/COPY-RULES.md`, then the pack it routes to (`brand/copy-rules-pack/`, team only).
+1. `brand/COPY-RULES.md`, then the pack it routes to (`brand/copy-rules-pack/`).
 2. `content/scripts/SCRIPT-RULES.md` and everything in `rules/scripts-and-copy/`.
 3. The client's `clients/<slug>/CONTENT-RULES.md` if it's client work. Client rules beat house rules.
 

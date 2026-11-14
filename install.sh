@@ -21,7 +21,6 @@ if ! grep -q "WSM_HOME=" "$HOME/.zshrc" 2>/dev/null; then
 fi
 
 if [ -d "$PRIV" ]; then
-  ln -sfn "$PRIV/copy-rules-pack" "$HERE/brand/copy-rules-pack"
   for c in "$PRIV"/clients/*/; do
     slug="$(basename "$c")"; mkdir -p "$HERE/clients/$slug"
     for f in "$c"*; do ln -sfn "$f" "$HERE/clients/$slug/$(basename "$f")"; done
