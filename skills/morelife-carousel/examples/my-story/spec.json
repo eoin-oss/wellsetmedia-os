@@ -1,0 +1,91 @@
+{
+  "title": "My story (the reference build, 12 slides)",
+  "out": "export",
+  "slides": [
+    {"photo": "photos/01-teen-cig.jpg", "focus": [0.5, 0.52], "size": 50, "groups": [
+      {"at": "top", "y": 120, "lines": [{"text": "Eight years ago I was starting college [[in a dark place]]......"}]},
+      {"at": "bottom", "y": 1250, "lines": [{"text": "And it was about to [[get worse]] before it got better..."}]}
+    ]},
+    {"photo": "photos/02-teen-smoke-face.jpg", "focus": [0.5, 0.42], "groups": [
+      {"at": "top", "y": 80, "lines": [
+        {"text": "I woke up [[sick with anxiety]] every single morning..."},
+        {"text": "I couldn't even say my own name in front of a class..."},
+        {"text": "so I'd smoke a joint every morning just to [[ease my nerves]]..."},
+        {"text": "[[I didn't know who I was]], or who I was meant to be..."}
+      ]}
+    ]},
+    {"photo": "photos/03-twins.jpg", "focus": [0.5, 0.34], "groups": [
+      {"at": "bottom", "y": 1260, "lines": [
+        {"text": "Me and my twin Jack have been side by side since we were five..."},
+        {"text": "growing up, we were the men of the house..."},
+        {"text": "whatever happened, we had each other's back..."}
+      ]}
+    ]},
+    {"card": "photos/04-huberman-header.png", "groups": [
+      {"at": "top", "y": 150, "lines": [{"text": "A year into college, I found a podcast by __Andrew Huberman__..."}]},
+      {"at": "top", "y": 860, "lines": [
+        {"text": "he talked about the brain like something you could actually train..."},
+        {"text": "not something you were [[stuck with]]..."},
+        {"text": "for the first time, I stopped being the anxiety and started watching it...", "box": "g"}
+      ]}
+    ]},
+    {"photo": "photos/05-books.jpg", "focus": [0.5, 0.80], "groups": [
+      {"at": "bottom", "y": 1270, "lines": [
+        {"text": "I went down a rabbit hole of books on the mind..."},
+        {"text": "psychology, the subconscious, how beliefs are built..."},
+        {"text": "I knew the theory inside out..."}
+      ]}
+    ]},
+    {"photo": "photos/06-window-wide.jpg", "focus": [0.5, 0.5], "groups": [
+      {"at": "top", "y": 90, "lines": [
+        {"text": "But at 24, [[I froze at a networking event]]..."},
+        {"text": "the same feeling as that classroom, years later..."},
+        {"text": "all that knowledge, and I [[still couldn't get out of my own way]]..."}
+      ]}
+    ]},
+    {"photo": "photos/07-mentor.jpg", "focus": [0.5, 0.52], "groups": [
+      {"at": "top", "y": 50, "lines": [
+        {"text": "Then I met my mentor..."},
+        {"text": "he used hypnosis on me", "box": "g"},
+        {"text": "and two weeks later, I walked into the next event calm..."}
+      ]}
+    ]},
+    {"photo": "photos/08-gym-wide.jpg", "focus": [0.47, 0.5], "groups": [
+      {"at": "top", "y": 60, "lines": [
+        {"text": "From then on, it was mind first. Then the body..."},
+        {"text": "every single morning, before anything else..."},
+        {"text": "I rebuilt who I was, one day at a time..."}
+      ]}
+    ]},
+    {"photo": "photos/09-mum.jpg", "focus": [0.5, 0.45], "groups": [
+      {"at": "bottom", "y": 1270, "lines": [
+        {"text": "The first person I helped was my mum..."},
+        {"text": "it wasn't me telling her. It was me showing her..."}
+      ]}
+    ]},
+    {"photo": "photos/10-stage-pointing.jpg", "focus": [0.5, 0.0], "groups": [
+      {"at": "top", "y": 40, "lines": [
+        {"text": "Now I help founders who've done everything right, and [[still feel stuck]]..."},
+        {"text": "I find what's been holding them back, and I remove it..."}
+      ]},
+      {"at": "bottom", "y": 1270, "lines": [
+        {"text": "they step into the best version of themselves..."},
+        {"text": "and finally hit the goals they've been chasing for years..."}
+      ]}
+    ]},
+    {"photo": "photos/11-stage-wide.jpg", "focus": [0.5, 0.0], "groups": [
+      {"at": "top", "y": 50, "lines": [
+        {"text": "And this year, I hosted my own seminar..."},
+        {"text": "a full room of people ready to change..."},
+        {"text": "calm on the stage, where I once couldn't say my own name...", "box": "g"}
+      ]}
+    ]},
+    {"photo": "photos/12-stage-centre.jpg", "focus": [0.5, 0.40], "groups": [
+      {"at": "bottom", "y": 1280, "lines": [
+        {"text": "Now we're on a mission to give millions of people more life"},
+        {"text": "Not more money. Not more stuff.\nMore life.", "box": "g"},
+        {"text": "Comment LIMITLESS and I'll show you where to start"}
+      ]}
+    ]}
+  ]
+}

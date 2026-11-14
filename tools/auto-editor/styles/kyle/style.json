@@ -1,0 +1,138 @@
+{
+ "name": "kyle",
+ "measured_from": [
+  "first100 (post the first videp)",
+  "perception",
+  "4 IG reels: Ddo6BOEiDs3 Dd7NlHlIVka DePkOZjCovM DeW6rEvCI6e"
+ ],
+ "phrases": {
+  "max_words": 6,
+  "max_sec": 2.4,
+  "min_sec": 0.55,
+  "pause_break": 0.25,
+  "break_before": [
+   "and",
+   "but",
+   "because",
+   "so",
+   "when",
+   "whether",
+   "if",
+   "then",
+   "or",
+   "which",
+   "that's",
+   "where"
+  ]
+ },
+ "captions": {
+  "template": "captions/base.comp",
+  "carrier_title": "Smooth Word Up",
+  "track": 3,
+  "every_phrase": true,
+  "modes": {
+   "over_broll": {
+    "zoom": 0.78,
+    "pan": 0,
+    "tilt": -290,
+    "note": "17 Oct: lower third like over_aroll (centred captions crossed Kyle's face on b-roll of him)"
+   },
+   "over_aroll": {
+    "zoom": 0.73,
+    "pan": 0,
+    "tilt": -290
+   },
+   "stack": {
+    "zoom": 0.75,
+    "pan": -515,
+    "tilt": [
+     240,
+     150,
+     60
+    ],
+    "tracks": [
+     3,
+     4,
+     5
+    ],
+    "max_words": 3,
+    "as": "over_aroll",
+    "note": "retired 17 Oct: side stacks landed beside Kyle's head when he stood on that side; stack lines render as over_aroll"
+   },
+   "hook": {
+    "zoom": 0.72,
+    "pan": 0,
+    "tilt": [
+     -130,
+     -250,
+     -370
+    ],
+    "tracks": [
+     3,
+     4,
+     5
+    ],
+    "note": "hook lines: bold, centred, stacked in the lower third BELOW Kyle's face (his note 17 Oct: smaller, never over his face), each stays up until the hook ends",
+    "shadow": null,
+    "look_note": "17 Oct: plain white exactly like every other caption. No shadow, no colour (Eoin: shadows are bad)"
+   }
+  },
+  "ref_width": 1920,
+  "stack_rule": "only short punchy lines (<=3 words) that land a beat: rhetorical questions, answers, 'nobody else', 'right now'. Longer lines fall back to over_aroll."
+ },
+ "broll": {
+  "track": 2,
+  "target_share": 0.3,
+  "share_range": [
+   0.25,
+   0.55
+  ],
+  "len_sec": [
+   0.6,
+   2.6
+  ],
+  "cut_on": "phrase boundaries; one shot per phrase, or one shot across two short phrases that share an idea",
+  "aroll_lines": "hook first line, 'I' claims and opinions, rhetorical questions to camera, the direct ask/CTA, and the last line",
+  "match_order": [
+   "planned shot from the shot list",
+   "literal: the person/place/object/action named in the line",
+   "embodied: a movement or image that acts the line out (walking away = leaving, looking back = turn back, sunset = payoff)",
+   "none -> stay on A-roll"
+  ],
+  "never": [
+   "random filler",
+   "ungraded log footage",
+   "the same clip twice in one video",
+   "clips of other people talking to camera",
+   "client footage unless the line is about client work",
+   "attendee in trance",
+   "attendee speaking",
+   "attendee close-up",
+   "Eoin's personal/trip footage"
+  ]
+ },
+ "end_card": "WELLSINTHELOOP stutter card (in perception project, last 0.96s, V1-V3 'Text' items)",
+ "glossary": "Kyle Ritchie, hypnosis, hypnotist, subconscious, prefrontal cortex, 14 milliseconds, 500 milliseconds, Glasgow, seminar, Morelife, Uber, postcode",
+ "aroll": {
+  "jump_punch": 1.12,
+  "note": "every A-roll join b-roll can't hide gets a toggled 112% punch-in (raw cuts and pre-cut shorts)",
+  "face_push": {
+   "to": 1.06,
+   "min_sec": 3,
+   "note": "17 Oct, from the PPC VSL: slow push-in on face stretches, reset under b-roll"
+  }
+ },
+ "audio": {
+  "voice_isolation": 55,
+  "music_gain_target_lufs": -32,
+  "music_note": "viral-type instrumental, background only"
+ },
+ "intro_zoom": {
+  "from": 1.3,
+  "sec": 0.48,
+  "motion_blur": true,
+  "shutter": 180,
+  "note": "17 Oct: short zoom-out, brief motion blur (Eoin)"
+ },
+ "cut_lead_frames": 2
+}

@@ -1,0 +1,164 @@
+{
+ "name": "hempton-podcast",
+ "label": "James Hempton podcast clips",
+ "client": "James Hempton (The James Hempton Show)",
+ "format": "9:16 shorts cut from a multicam podcast: cuts + captions only, no b-roll",
+ "approved": "2026-10-18, clip 01 of the James Galligan episode",
+ "canvas": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 25,
+  "input_scaling": "scaleToCrop"
+ },
+ "job_inputs": {
+  "clips": "clients/<client>/<episode>/clips.tsv  (id, slug, segments mm:ss-mm:ss{first words|last words}+..., speaker, why; why starting 'James asks first' / 'Galligan asks first (n)' = the opening question is the hook)",
+  "hooks": "clients/<client>/<episode>/hooks.tsv  (id, hook): one curiosity text hook per clip",
+  "music": "clients/<client>/<episode>/music.tsv  (id, file, start, gain_db): one bed per clip, measured"
+ },
+ "selection": {
+  "count": 30,
+  "skip_first_sec": 240,
+  "mix": "mostly the guest, plus clips James leads where the guest asks him or adds to it (about 6 in 30)",
+  "open_on_question": "open on the FULL question, every word of it, with enough context to stand alone (Eoin 18 Oct: 'never cut the hook question short again'). Long questions wrap onto two lines per row, never trimmed.",
+  "hook_question_max_words": null,
+  "never": [
+   "ad reads",
+   "tangents that hurt the client (vices etc.)",
+   "naming people the client shouldn't be tied to",
+   "defamatory lines about public figures"
+  ]
+ },
+ "cut": {
+  "transcribe": "openai-whisper medium.en word_timestamps, NO initial_prompt (it skips the first ~30s)",
+  "anchors": "every segment cut on text anchors, whole words only",
+  "voice_start_lead_sec": 0.08,
+  "voice_end_hold_sec": 0.3,
+  "fillers": {
+   "min_gap_sec": 0.3,
+   "voiced_sec": 0.12,
+   "dead_pause_sec": 0.6,
+   "keep_after_sec": 0.06,
+   "keep_before_sec": 0.08
+  },
+  "jump_punch": 1.12,
+  "tail_frames": 15,
+  "tail_audio_frames": 3,
+  "dead_pause_sec": 0.5,
+  "post_hook_flash": "if the answer opens on a <30-frame piece of another camera, the question shot is held under the answer's first words (no flash)"
+ },
+ "framing": {
+  "face_lock": "Fusion Transform Center via XYPath (absolute X), keyed every 3rd frame at COMPN_RenderStart + f",
+  "face_track": "MediaPipe BlazeFace every frame, gaussian sigma 2 frames",
+  "intro_zoom": {
+   "from": 1.278,
+   "frames": 23,
+   "curve": "Eoin's Smooth Zoom out (Perception edit): bezier P0(0,1.278) P1(2,1.114) P2(17.6,1) P3(35,1)",
+   "motion_blur": true
+  }
+ },
+ "hook": {
+  "rows": [
+   [
+    "Smooth Word Down",
+    1.25
+   ],
+   [
+    "Line Left",
+    1.25
+   ],
+   [
+    "Blur Up slide",
+    1.7
+   ]
+  ],
+  "split": "<=3 words 1 row (Blur Up), <=5 two rows (Line Left + Blur Up), else three rows: first up to 3, middle, last 2 big",
+  "first_frame": 3,
+  "stagger_frames": 5,
+  "ends_on_cut": true,
+  "set_text_on": "StyledTextFollower 'Text' (setting it on the Text+ kills the animation)",
+  "rename_items": true,
+  "long_rows": "a row too wide for one line breaks into two balanced lines"
+ },
+ "text_hook": {
+  "font": "SF Pro Display Bold",
+  "text_rgb": [
+   0,
+   0,
+   0
+  ],
+  "box_rgb": [
+   1,
+   0.84,
+   0.04
+  ],
+  "box_round": 0.45,
+  "box_extend": [
+   0.09,
+   0.06
+  ],
+  "size": 0.1,
+  "max_lines": 2,
+  "position": "directly under the speaker's chin, question rows stacked beneath (his head fills the top of this crop)",
+  "chin_offset": 0.135,
+  "pop_in": "Transform size 0.6 -> 1.04 -> 1.0 over 7 frames",
+  "duration": "ends on the cut when the clip opens on a question, else 3.0s",
+  "comp": "styles/eoin/captions/hookbox.comp",
+  "min_sec": 3.0
+ },
+ "captions": {
+  "comp": "styles/eoin/captions/fast.comp",
+  "animation": "blur in + rise, sharp within ~4 frames (the stock base.comp never goes solid)",
+  "max_words": 3,
+  "safe_width_px": 760,
+  "tilt": -60,
+  "size": 1.45,
+  "lead_frames": 2,
+  "never_before_cut": true,
+  "drop": "standalone interjections from the other mic (Yeah. / Right.), um/uh",
+  "position": "just under the lowest chin in the framing (y ~1020 of 1920), nearer the centre (Eoin 18 Oct)",
+  "split_at_hook": true
+ },
+ "music": {
+  "pool": [
+   "Caleb Arredondo - Echo Sax No.4.mp3",
+   "Everything In Its Right Place (Slowed).mp3",
+   "A Good Man with a Broken Heart.mp3",
+   "FKJ - Ylang Ylang.mp3",
+   "Echo Sax End (Original) by Caleb Arredondo.mp3",
+   "Ty's Music - As Time Flies - Special Version.mp3",
+   "Moments x Where Roses Bloom (Voice Memo).mp3",
+   "HOME - Resonance (Slowed to perfection  Reverb).mp3",
+   "Aaron Hibell - i feel lost [official audio].mp3"
+  ],
+  "dir": "/Volumes/Extreme SSD/editiing assets/music",
+  "never": [
+   "notdavid",
+   "all caps"
+  ],
+  "match": "soft beds on reflective/emotional clips, cleaner driving beds on business clips; never the same track back to back",
+  "start": "measured kick-in (skip the intro)",
+  "target_lufs": -31.8,
+  "fade_out_sec": 0.8
+ },
+ "resolve": {
+  "project": "build into the OPEN project, one timeline per clip named '<id> <slug>'",
+  "tracks": {
+   "V1": "picture",
+   "V2": "captions",
+   "V3-V5": "hook rows",
+   "V6": "text hook",
+   "A1": "dialogue",
+   "A2": "music"
+  },
+  "safety": [
+   "re-select the clip's timeline before every append (Resolve appends to whatever is open)",
+   "switch away from a timeline before deleting it",
+   "never touch Resolve from a second process while a batch builds",
+   "comp imports need absolute paths"
+  ]
+ },
+ "tools": {
+  "prep": "engine/podprep.py <source> <clips.tsv> <job root> [ids]",
+  "build": "engine/podbuild.py <job root> [ids]"
+ }
+}

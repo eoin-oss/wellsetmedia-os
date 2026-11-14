@@ -1,0 +1,594 @@
+<title>Editor Style Packs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,wght@0,500;0,800;1,500&family=Caveat:wght@600&family=Libre+Baskerville:ital@0;1&family=Playfair+Display:ital,wght@0,800;1,500&family=Space+Mono:wght@400;700&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap">
+<style>
+/* Layout: a lookbook. One row per style: a still 9:16 frame of the look beside its spec sheet. */
+:root{
+  --bg:#0d0f10; --panel:#15181a; --line:#262b2e; --fg:#eceeee; --muted:#8d9699; --accent:#34c6d9; --warm:#e0b25c;
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Space Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f3f4f4;--panel:#ffffff;--line:#dde1e2;--fg:#111415;--muted:#5d6669;--accent:#0d8fa1;--warm:#a8741a;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f3f4f4;--panel:#ffffff;--line:#dde1e2;--fg:#111415;--muted:#5d6669;--accent:#0d8fa1;--warm:#a8741a;color-scheme:light}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:48px 80px}
+header h1{font-size:clamp(34px,6vw,64px);font-weight:700;letter-spacing:-.02em;line-height:1;margin:0 0 14px}
+header p{color:var(--muted);max-width:62ch;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.legend a{font-size:12px;color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+.legend a:hover,.legend a:focus-visible{border-color:var(--accent);outline:none}
+
+.group{margin-top:64px}
+.group > h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 6px}
+.group > p{color:var(--muted);margin:0 0 24px;max-width:62ch}
+
+.style{display:grid;grid-template-columns:240px 1fr;gap:32px;padding-block:28px;border-top:1px solid var(--line)}
+.style > div{min-width:0}
+.style h3{font-size:26px;letter-spacing:-.01em;margin:0 0 2px;line-height:1.15;text-wrap:balance}
+.ref{font-size:12px;color:var(--muted);margin:0 0 12px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:2px 9px;margin-left:8px;vertical-align:4px;border:1px solid var(--accent);color:var(--accent)}
+.tag.w{border-color:var(--warm);color:var(--warm)}
+.look{margin:0 0 16px;max-width:64ch}
+dl{display:grid;grid-template-columns:110px 1fr;gap:8px 16px;margin:0;font-size:14px}
+dt{color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+dd{margin:0}
+@media (max-width:640px){.style{grid-template-columns:1fr}.frame{max-width:220px}dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:8px}}
+
+/* ---------- the frames ---------- */
+.frame{position:relative;width:100%;max-width:240px;aspect-ratio:9/16;overflow:hidden;border-radius:10px;container-type:inline-size;isolation:isolate;box-shadow:0 0 0 1px var(--line)}
+.frame *{position:absolute;margin:0}
+.spk{bottom:0;left:50%;width:78%;transform:translateX(-50%)}
+.cap{left:0;right:0;text-align:center}
+.grain::after{content:"";inset:0;position:absolute;pointer-events:none;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.5'/></svg>");mix-blend-mode:overlay;opacity:.55}
+
+/* 1 paper cut */
+.f-paper{background:radial-gradient(circle at 30% 20%,#d9cdb4,#c4b393 70%);}
+.f-paper .torn{left:-4%;right:-4%;top:30%;bottom:-2%;background:#2b2b2b;clip-path:polygon(0 4%,6% 1%,12% 5%,19% 0,26% 4%,33% 2%,41% 6%,48% 1%,56% 4%,63% 0,71% 5%,78% 2%,86% 6%,93% 1%,100% 4%,100% 100%,0 100%)}
+.f-paper .photo{left:16%;right:16%;top:36%;bottom:6%;background:#e9e3d6;padding:0;box-shadow:2px 3px 0 rgba(0,0,0,.35);transform:rotate(-3deg)}
+.f-paper .photo .spk{color:#3a3530;width:92%}
+.f-paper .photo::before{content:"";position:absolute;inset:5%;background:linear-gradient(#9fb3b5,#c9c0a8)}
+.f-paper .tape{width:34%;height:6%;background:rgba(240,236,215,.75);top:34%;left:8%;transform:rotate(-24deg)}
+.f-paper .tape.b{left:auto;right:6%;top:33%;transform:rotate(18deg)}
+.f-paper .ransom{top:9%;left:6%;right:6%;display:flex;flex-wrap:wrap;gap:1.5cqw;justify-content:center;position:absolute}
+.f-paper .ransom span{position:static;font-size:11cqw;line-height:1;padding:1cqw 2cqw;box-shadow:1px 2px 0 rgba(0,0,0,.25)}
+.f-paper .r1{background:#f2efe6;font-family:"Bodoni Moda",serif;font-weight:800;transform:rotate(-4deg)}
+.f-paper .r2{background:#1f1f1f;color:#efe9da;font-family:Anton,sans-serif;transform:rotate(3deg)}
+.f-paper .r3{background:#c8392b;color:#fff;font-family:"Special Elite",monospace;transform:rotate(-2deg)}
+.f-paper .r4{background:#e8d27a;font-family:"Playfair Display",serif;font-style:italic;transform:rotate(5deg)}
+
+/* 2 editorial */
+.f-news{background:#e9e6de;color:#151515}
+.f-news .mast{top:4%;left:0;right:0;text-align:center;font-family:"UnifrakturMaguntia",serif;font-size:13cqw;line-height:1}
+.f-news .rule{left:6%;right:6%;top:15%;height:0;border-top:1px solid #151515;border-bottom:3px double #151515;padding-top:2px}
+.f-news .date{top:16.4%;left:6%;right:6%;display:flex;justify-content:space-between;font-family:"Libre Baskerville",serif;font-size:3.2cqw;letter-spacing:.08em;text-transform:uppercase}
+.f-news .date span{position:static}
+.f-news .head{top:21%;left:6%;right:6%;font-family:"Playfair Display",serif;font-weight:800;font-size:10.5cqw;line-height:.98;text-align:left}
+.f-news .portrait{left:6%;width:52%;top:46%;bottom:6%;overflow:hidden;background:#d6d2c7}
+.f-news .portrait .spk{color:#111;width:100%;-webkit-mask:radial-gradient(circle,#000 42%,transparent 46%) 0 0/2.4cqw 2.4cqw;mask:radial-gradient(circle,#000 42%,transparent 46%) 0 0/2.4cqw 2.4cqw}
+.f-news .cols{left:62%;right:6%;top:46%;bottom:30%;background:repeating-linear-gradient(#151515 0 1px,transparent 1px 3.4cqw);opacity:.45}
+.f-news .pull{left:62%;right:6%;bottom:7%;font-family:"Playfair Display",serif;font-style:italic;font-size:5.4cqw;line-height:1.1;border-top:2px solid #151515;padding-top:2cqw}
+.f-news .pen{left:2%;width:62%;top:34.5%;height:9%;border:2px solid #c8261d;border-radius:50%;transform:rotate(-4deg)}
+
+/* 3 infographic */
+.f-info{background:#f4f5f2;color:#121417}
+.f-info .spk{color:#2a2f33;width:70%;left:62%}
+.f-info .stat{top:6%;left:7%;font-family:var(--sans);font-weight:700;font-size:17cqw;letter-spacing:-.03em;line-height:1}
+.f-info .stat small{font-size:6cqw;font-weight:400;letter-spacing:0;margin-left:1cqw;position:static}
+.f-info .lbl{top:17.5%;left:7%;font-size:3.6cqw;letter-spacing:.1em;text-transform:uppercase;color:#5c656b}
+.f-info .bars{left:7%;top:25%;width:48%;height:24%;display:flex;align-items:flex-end;gap:2.2cqw;border-bottom:1px solid #121417}
+.f-info .bars i{position:static;flex:1;background:#121417}
+.f-info .bars i.h{background:#e2462f}
+.f-info svg.line{left:7%;top:55%;width:50%;height:14%;overflow:visible}
+.f-info .chip{left:7%;top:72%;font-size:3.4cqw;background:#121417;color:#f4f5f2;padding:1.2cqw 2.6cqw;border-radius:99px}
+
+/* 4 kinetic type */
+.f-kin{background:#0b0b0b;color:#f3f3f0;font-family:Anton,sans-serif;text-transform:uppercase}
+.f-kin .w{left:5%;right:5%;line-height:.86}
+.f-kin .w1{top:8%;font-size:24cqw}
+.f-kin .w2{top:27%;font-size:44cqw;color:transparent;-webkit-text-stroke:1.5px #f3f3f0}
+.f-kin .w3{top:59%;font-size:14cqw;font-family:var(--sans);font-weight:300;letter-spacing:.3em;text-transform:lowercase}
+.f-kin .w4{top:68%;font-size:22cqw;color:#ff4d2e}
+.f-kin .w5{top:84%;font-size:12cqw;text-align:right}
+
+/* 5 tech HUD */
+.f-hud{background:#06090b;color:#b8f3ff;font-family:var(--mono)}
+.f-hud .grid{inset:0;background:linear-gradient(rgba(120,220,255,.07) 1px,transparent 1px) 0 0/8cqw 8cqw,linear-gradient(90deg,rgba(120,220,255,.07) 1px,transparent 1px) 0 0/8cqw 8cqw}
+.f-hud .spk{color:#1d2a30;width:74%}
+.f-hud .br{width:16%;height:9%;border:1.5px solid #6fe3ff}
+.f-hud .tl{top:24%;left:22%;border-right:0;border-bottom:0}.f-hud .tr{top:24%;right:22%;border-left:0;border-bottom:0}
+.f-hud .bl{top:58%;left:22%;border-right:0;border-top:0}.f-hud .bR{top:58%;right:22%;border-left:0;border-top:0}
+.f-hud .scan{left:0;right:0;top:44%;height:1px;background:#6fe3ff;box-shadow:0 0 8px #6fe3ff}
+.f-hud .read{font-size:3.3cqw;line-height:1.5;letter-spacing:.06em}
+.f-hud .r1{top:5%;left:6%}.f-hud .r2{top:5%;right:6%;text-align:right}
+.f-hud .term{bottom:7%;left:6%;right:6%;font-size:3.6cqw;border-top:1px solid rgba(111,227,255,.4);padding-top:2cqw}
+
+/* 6 notes / app UI */
+.f-app{background:linear-gradient(#3b4650,#1f262c)}
+.f-app .spk{color:#11161a}
+.f-app .notes{top:6%;left:8%;right:8%;background:#fbfaf6;border-radius:3cqw;padding:3cqw 4cqw;color:#1c1c1e;font-family:var(--sans);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.f-app .notes *{position:static}
+.f-app .notes b{display:block;font-size:6cqw;margin-bottom:1cqw}
+.f-app .notes span{display:block;font-size:3.6cqw;color:#6b6b70}
+.f-app .notes .yel{color:#c79100;font-size:3.2cqw;font-weight:600;margin-bottom:1.5cqw}
+.f-app .bub{font-family:var(--sans);font-size:4.2cqw;padding:2.4cqw 3.6cqw;border-radius:5cqw;max-width:62%}
+.f-app .in{left:7%;top:34%;background:#e9e9eb;color:#111}
+.f-app .out{right:7%;top:42%;background:#2f7cf6;color:#fff}
+.f-app .search{left:8%;right:8%;bottom:8%;background:#fff;border-radius:99px;padding:2.6cqw 4cqw;font-family:var(--sans);font-size:3.8cqw;color:#202124;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+
+/* 7 bold word captions */
+.f-bold{background:linear-gradient(#5d6a72,#2b3237)}
+.f-bold .spk{color:#141a1e;width:84%}
+.f-bold .small{top:55%;font-family:Anton,sans-serif;font-size:9cqw;color:#fff;-webkit-text-stroke:1px #000;text-transform:uppercase}
+.f-bold .big{top:62%;font-family:Anton,sans-serif;font-size:19cqw;color:#ffd21f;text-transform:uppercase;line-height:1;text-shadow:0 1cqw 0 #000;-webkit-text-stroke:1.5px #000}
+
+/* 8 film */
+.f-film{background:radial-gradient(ellipse at 60% 40%,#d38d55,#6e3b25 60%,#2a1710)}
+.f-film .spk{color:#1a0e09;width:80%;filter:drop-shadow(0 0 6px rgba(255,90,40,.55))}
+.f-film .bar{left:0;right:0;height:13%;background:#000}
+.f-film .top{top:0}.f-film .bot{bottom:0}
+.f-film .leak{top:8%;right:-20%;width:70%;height:40%;background:radial-gradient(#ffb36b,transparent 65%);opacity:.7;mix-blend-mode:screen}
+.f-film .sub{bottom:16%;font-family:"Libre Baskerville",serif;font-style:italic;font-size:4.6cqw;color:#f6e7cf}
+.f-film .tc{top:15%;left:6%;font-family:var(--mono);font-size:3cqw;color:rgba(255,230,200,.7)}
+
+/* 9 whiteboard */
+.f-white{background:#fbfbf9;color:#1b1b1b}
+.f-white .spk{color:#cfd3d6;width:66%;left:64%}
+.f-white .hand{font-family:Caveat,cursive;font-size:10cqw;line-height:1}
+.f-white .h1{top:9%;left:8%}
+.f-white .h2{top:42%;left:6%;font-size:8cqw;color:#1e5bd8}
+.f-white .ring{top:7.5%;left:4%;width:70%;height:12%;border:2px solid #e2462f;border-radius:50%;transform:rotate(-3deg)}
+.f-white svg:not(.spk){inset:0;width:100%;height:100%}
+
+/* 10 neon */
+.f-neon{background:#07060c}
+.f-neon .spk{color:#141220;width:80%}
+.f-neon .ring{top:12%;left:50%;width:62%;aspect-ratio:1;transform:translateX(-50%);border:2px solid #ff4fd8;border-radius:50%;box-shadow:0 0 10px #ff4fd8,inset 0 0 10px #ff4fd8}
+.f-neon .word{top:66%;font-family:var(--sans);font-weight:800;font-size:13cqw;letter-spacing:.04em;color:transparent;-webkit-text-stroke:1.5px #7ef9ff;text-shadow:0 0 8px #7ef9ff,0 0 22px #2fd6ff}
+
+/* 11 VHS */
+.f-vhs{background:linear-gradient(#2a3a55,#4b3b54 60%,#223)}
+.f-vhs .spk{color:#141826;width:80%;filter:drop-shadow(3px 0 0 rgba(255,0,60,.6)) drop-shadow(-3px 0 0 rgba(0,220,255,.6))}
+.f-vhs .lines{inset:0;background:repeating-linear-gradient(rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+.f-vhs .osd{font-family:VT323,monospace;color:#f2f2f2;font-size:9cqw;text-shadow:2px 0 #ff2d55,-2px 0 #00e0ff}
+.f-vhs .rec{top:5%;left:7%}.f-vhs .rec b{position:static;color:#ff2d2d}
+.f-vhs .play{top:5%;right:7%}
+.f-vhs .date{bottom:7%;left:7%;font-size:8cqw}
+.f-vhs .tear{left:0;right:0;top:63%;height:3%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-30deg)}
+
+/* 12 glitch */
+.f-glitch{background:#101214}
+.f-glitch .spk{width:80%}
+.f-glitch .g1{color:#ff2752;mix-blend-mode:screen;transform:translateX(calc(-50% - 2.5cqw))}
+.f-glitch .g2{color:#00e5ff;mix-blend-mode:screen;transform:translateX(calc(-50% + 2.5cqw))}
+.f-glitch .g3{color:#555c61;mix-blend-mode:screen}
+.f-glitch .slice{left:0;right:0;background:#101214}
+.f-glitch .s1{top:47%;height:2.5%;transform:translateX(9%);background:linear-gradient(90deg,#ff2752,#00e5ff);opacity:.55}
+.f-glitch .s2{top:71%;height:1.5%;background:#e8e8e8;opacity:.6}
+.f-glitch .word{top:8%;font-family:var(--mono);font-weight:700;font-size:10cqw;color:#e8e8e8;text-shadow:3px 0 #ff2752,-3px 0 #00e5ff}
+
+/* 13 resonance */
+.f-res{background:radial-gradient(ellipse at 50% 55%,#13252a,#05090b 70%)}
+.f-res svg:not(.spk){left:0;width:100%;top:30%;height:30%}
+.f-res .spk{color:#020405;width:78%}
+.f-res .card{top:6%;left:8%;right:8%;background:rgba(10,18,20,.85);border:1px solid rgba(52,198,217,.4);border-radius:2cqw;padding:3cqw 4cqw;color:#e6f6f8;font-family:var(--sans)}
+.f-res .card *{position:static}
+.f-res .card b{display:block;font-size:6.4cqw}
+.f-res .card span{display:block;font-size:3.2cqw;color:#7bb7c0}
+.f-res .cap{top:72%;font-family:var(--sans);font-weight:700;font-size:8cqw;color:#34c6d9;text-shadow:0 2px 6px #000}
+
+/* 14 fast b-roll stack */
+.f-stack{background:#111}
+.f-stack .tile{border:2px solid #111}
+.f-stack .t1{top:0;left:0;width:55%;height:34%;background:linear-gradient(135deg,#5b7d93,#1e3242)}
+.f-stack .t2{top:0;right:0;width:45%;height:34%;background:linear-gradient(135deg,#c48a4a,#5a3518)}
+.f-stack .t3{top:34%;left:0;width:40%;height:30%;background:linear-gradient(135deg,#6f8c58,#22331a)}
+.f-stack .t4{top:34%;right:0;width:60%;height:30%;background:linear-gradient(135deg,#9c4e5e,#36161f)}
+.f-stack .t5{top:64%;left:0;right:0;bottom:0;background:linear-gradient(135deg,#46505a,#15191d)}
+.f-stack .spk{color:#0a0a0a;width:74%;filter:drop-shadow(0 0 0 #fff) drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 -1.5px 0 #fff)}
+.f-stack .hook{top:6%;left:6%;right:6%;background:#fff;color:#000;font-family:var(--sans);font-weight:800;font-size:6.4cqw;line-height:1.1;padding:2cqw 3cqw;text-align:center}
+.f-stack .lbl{font-family:var(--mono);font-size:2.6cqw;color:rgba(255,255,255,.6);bottom:4%;left:5%}
+
+/* 15 cinematic */
+.f-cine{background:linear-gradient(#26343d 0 45%,#3b4a4a 45% 60%,#1a2220 60%)}
+.f-cine svg:not(.spk){left:0;width:100%;top:30%;height:35%}
+.f-cine .bar{left:0;right:0;height:22%;background:#000}
+.f-cine .top{top:0}.f-cine .bot{bottom:0}
+.f-cine .sub{bottom:25%;font-family:"Libre Baskerville",serif;font-size:4cqw;color:#e9ecea;letter-spacing:.02em}
+.f-cine .chap{top:24%;left:6%;font-family:var(--sans);font-size:2.8cqw;letter-spacing:.3em;color:rgba(255,255,255,.7)}
+
+/* 16 aesthetic minimal */
+.f-min{background:radial-gradient(ellipse at 30% 30%,#2a2620,#0c0b0a 70%)}
+.f-min .shaft{top:-10%;left:20%;width:30%;height:90%;background:linear-gradient(rgba(255,230,190,.16),transparent);transform:skewX(-18deg)}
+.f-min .txt{bottom:14%;left:10%;right:10%;font-family:"Bodoni Moda",serif;font-style:italic;font-size:5cqw;color:#e8e0d2;text-align:left;line-height:1.3}
+.f-min .txt small{position:static;display:block;font-family:var(--sans);font-style:normal;font-size:2.6cqw;letter-spacing:.3em;color:#8d8577;margin-top:3cqw}
+
+/* 17 documentary explainer */
+.f-doc{background:#d8d0bd}
+.f-doc svg:not(.spk){inset:0;width:100%;height:100%}
+.f-doc .photo{right:7%;top:52%;width:44%;height:30%;background:#cfc8b8;border:3cqw solid #f1ece0;border-bottom-width:6cqw;transform:rotate(5deg);box-shadow:2px 3px 0 rgba(0,0,0,.3);overflow:hidden}
+.f-doc .photo .spk{color:#4a4339;width:100%;filter:sepia(1)}
+.f-doc .label{top:7%;left:7%;font-family:"Special Elite",monospace;font-size:4.4cqw;color:#2a2620;background:#f1ece0;padding:1.4cqw 2.4cqw}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="spk" viewBox="0 0 100 100"><circle cx="50" cy="36" r="15" fill="currentColor"/><path d="M14 100C14 72 30 58 50 58S86 72 86 100Z" fill="currentColor"/></symbol>
+</svg>
+
+<div class="wrap">
+<header>
+  <h1>Style packs</h1>
+  <p>Every look the editor will ship with. Each frame is a still of the style on one line from the resonance reel. A pack is the whole look: captions, pacing, graphics, type and sound. Every pack gets built natively in Resolve and tested on the resonance footage before it counts as done.</p>
+  <nav class="legend" aria-label="Jump to a style">
+    <a href="#paper">Paper cut-out</a><a href="#editorial">Editorial</a><a href="#infographic">Infographic</a><a href="#kinetic">Kinetic type</a><a href="#hud">Tech HUD</a><a href="#app">Notes and app UI</a><a href="#bold">Bold word captions</a><a href="#film">Film</a><a href="#whiteboard">Whiteboard</a><a href="#neon">Neon</a><a href="#vhs">VHS</a><a href="#glitch">Glitch</a><a href="#resonance">Resonance</a><a href="#stack">Fast b-roll stack</a><a href="#cinematic">Cinematic</a><a href="#minimal">Aesthetic minimal</a><a href="#doc">Documentary explainer</a>
+  </nav>
+</header>
+
+<section class="group">
+  <h2>First batch</h2>
+  <p>Talking head only. No b-roll needed, so these run on any reel today.</p>
+
+  <article class="style" id="paper">
+    <div class="frame f-paper grain" role="img" aria-label="Paper cut-out frame">
+      <div class="ransom"><span class="r1">EVERY</span><span class="r2">THING</span><span class="r3">IS</span><span class="r4">frequency</span></div>
+      <div class="torn"></div>
+      <div class="photo"><svg class="spk"><use href="#spk"/></svg></div>
+      <i class="tape"></i><i class="tape b"></i>
+    </div>
+    <div>
+      <h3>Paper cut-out <span class="tag w">Eoin likes</span></h3>
+      <p class="ref">Pairs with editorial</p>
+      <p class="look">Everything looks cut, torn and taped by hand. He becomes a cut-out photo on a paper stack, key words arrive as ransom-note scraps, and transitions are pages tearing away. Stop-motion jitter at 12fps on the graphics only, so the talking stays smooth.</p>
+      <dl>
+        <dt>Templates</dt><dd>Torn-edge reveal, taped photo, ransom word, paper stack transition, cut-out sticker of him, scribbled arrow</dd>
+        <dt>Type</dt><dd>Mixed per word: Bodoni, Anton, typewriter, italic Playfair</dd>
+        <dt>Sound</dt><dd>Paper rustle, tear, tape rip, scissors snip, stamp</dd>
+        <dt>Pacing</dt><dd>Medium. Graphics on the key nouns, two or three per sentence</dd>
+        <dt>Best for</dt><dd>Story reels, opinions, anything personal</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="editorial">
+    <div class="frame f-news grain" role="img" aria-label="Editorial newspaper frame">
+      <p class="mast">The Resonance</p>
+      <i class="rule"></i>
+      <p class="date"><span>Dublin</span><span>19 Oct 2026</span></p>
+      <p class="head">Everything you know is a frequency</p>
+      <i class="pen"></i>
+      <div class="portrait"><svg class="spk"><use href="#spk"/></svg></div>
+      <i class="cols"></i>
+      <p class="pull">“Two waves amplifying each other.”</p>
+    </div>
+    <div>
+      <h3>Editorial / newspaper <span class="tag w">Eoin likes</span></h3>
+      <p class="ref">Pairs with paper cut-out</p>
+      <p class="look">The reel reads like a front page. A masthead and dateline open it, the hook becomes the headline, he sits in a halftone portrait beside the columns, and the best line lands as a pull quote. A red pen circles the word that matters.</p>
+      <dl>
+        <dt>Templates</dt><dd>Masthead open, headline banner, halftone portrait, column layout, pull quote, dateline, red-pen circle and underline</dd>
+        <dt>Type</dt><dd>Blackletter masthead, Playfair or Didot headline, Baskerville body, Courier dateline</dd>
+        <dt>Sound</dt><dd>Printing press, page turn, pen scratch, typewriter</dd>
+        <dt>Pacing</dt><dd>Calm. One layout per idea, held long enough to read</dd>
+        <dt>Best for</dt><dd>Hot takes, news angles, authority pieces</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="infographic">
+    <div class="frame f-info" role="img" aria-label="Infographic frame">
+      <svg class="spk"><use href="#spk"/></svg>
+      <p class="stat">70<small>%</small></p>
+      <p class="lbl">of your body is water</p>
+      <div class="bars"><i style="height:35%"></i><i style="height:55%"></i><i class="h" style="height:100%"></i><i style="height:42%"></i></div>
+      <svg class="line" viewBox="0 0 100 40" preserveAspectRatio="none"><polyline points="0,32 18,26 34,30 52,14 70,18 100,4" fill="none" stroke="#e2462f" stroke-width="2"/><circle cx="100" cy="4" r="3" fill="#e2462f"/></svg>
+      <p class="chip">432 Hz</p>
+    </div>
+    <div>
+      <h3>Infographic / data</h3>
+      <p class="ref">Clean and techy</p>
+      <p class="look">Every number he says becomes a figure on screen. Counters tick up, bars and lines draw on, and diagrams label what he's describing. Light ground, one accent colour, lots of air.</p>
+      <dl>
+        <dt>Templates</dt><dd>Stat counter, bar chart, line chart, comparison split, labelled diagram, percentage ring, stat chip</dd>
+        <dt>Type</dt><dd>Helvetica, tabular numbers</dd>
+        <dt>Sound</dt><dd>Soft ticks on counters, UI blips, whoosh on charts</dd>
+        <dt>Pacing</dt><dd>Driven by numbers in the script. Nothing on screen without data behind it</dd>
+        <dt>Best for</dt><dd>Educational reels, results, case studies</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="kinetic">
+    <div class="frame f-kin" role="img" aria-label="Kinetic type frame">
+      <p class="w w1">Every</p><p class="w w2">thing</p><p class="w w3">is a</p><p class="w w4">freq</p><p class="w w5">uency</p>
+    </div>
+    <div>
+      <h3>Kinetic type</h3>
+      <p class="ref">The words are the visual</p>
+      <p class="look">Full-screen type that slams, stacks, scales and masks to the rhythm of his voice. Cuts away from him for the big lines, then back. One accent colour, outlines against solids.</p>
+      <dl>
+        <dt>Templates</dt><dd>Word slam, stack build, outline vs fill, mask wipe, scale punch, split word</dd>
+        <dt>Type</dt><dd>Anton or a heavy grotesk, with a light Helvetica for small words</dd>
+        <dt>Sound</dt><dd>Hits and thumps on every slam, music-led</dd>
+        <dt>Pacing</dt><dd>Fast, on the beat</dd>
+        <dt>Best for</dt><dd>Hooks, manifestos, short punchy reels</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="hud">
+    <div class="frame f-hud" role="img" aria-label="Tech HUD frame">
+      <i class="grid"></i>
+      <svg class="spk"><use href="#spk"/></svg>
+      <i class="br tl"></i><i class="br tr"></i><i class="br bl"></i><i class="br bR"></i>
+      <i class="scan"></i>
+      <p class="read r1">SIGNAL 01<br>432.00 Hz</p>
+      <p class="read r2">AMP +6dB<br>LOCKED</p>
+      <p class="term">&gt; resonance detected_</p>
+    </div>
+    <div>
+      <h3>Tech HUD / interface</h3>
+      <p class="ref">The techy minimal one</p>
+      <p class="look">A thin-line interface around him: corner brackets, a scan line, live readouts and terminal text typing on. Dark and precise, never busy. The calm version of what resonance did.</p>
+      <dl>
+        <dt>Templates</dt><dd>Corner brackets, scan line, readout panel, terminal type-on, crosshair lock, data ticker</dd>
+        <dt>Type</dt><dd>Space Mono for readouts, Helvetica for captions</dd>
+        <dt>Sound</dt><dd>UI beeps, digital ticks, low hum</dd>
+        <dt>Pacing</dt><dd>Medium. Small graphics, often</dd>
+        <dt>Best for</dt><dd>AI, tech, systems, anything about how things work</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="app">
+    <div class="frame f-app" role="img" aria-label="Notes and app UI frame">
+      <svg class="spk"><use href="#spk"/></svg>
+      <div class="notes"><span class="yel">Notes</span><b>Things that resonate</b><span>1. Sound. 2. Water. 3. You.</span></div>
+      <p class="bub in">what even is resonance</p>
+      <p class="bub out">two waves amplifying each other</p>
+      <p class="search">what frequency is the earth</p>
+    </div>
+    <div>
+      <h3>Notes and app UI</h3>
+      <p class="ref">Native to the phone</p>
+      <p class="look">His points arrive as the things people already stare at: a Notes list, iMessage bubbles, a Google search, a tweet, a browser tab. Feels like the viewer's own screen.</p>
+      <dl>
+        <dt>Templates</dt><dd>Notes card, message bubbles, search bar typing, tweet card, browser window, notification banner</dd>
+        <dt>Type</dt><dd>San Francisco style system type</dd>
+        <dt>Sound</dt><dd>Message pop, keyboard taps, notification ping</dd>
+        <dt>Pacing</dt><dd>Medium, conversational</dd>
+        <dt>Best for</dt><dd>Lists, relatable takes, questions people ask</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="bold">
+    <div class="frame f-bold" role="img" aria-label="Bold word captions frame">
+      <svg class="spk"><use href="#spk"/></svg>
+      <p class="cap small">everything is</p>
+      <p class="cap big">frequency</p>
+    </div>
+    <div>
+      <h3>Bold word captions</h3>
+      <p class="ref">The Hormozi lane</p>
+      <p class="look">Nothing but him and huge captions, one or two words at a time, with a colour pop on the word that matters and a punch-in on the beats. The cheapest to run and the hardest to scroll past.</p>
+      <dl>
+        <dt>Templates</dt><dd>Word-by-word captions, colour pop, punch-in, emphasis shake</dd>
+        <dt>Type</dt><dd>Anton or Montserrat Black, heavy outline and drop shadow</dd>
+        <dt>Sound</dt><dd>Light pops on the colour words, music bed</dd>
+        <dt>Pacing</dt><dd>Fast, tight silence cuts</dd>
+        <dt>Best for</dt><dd>Volume content, advice, clips</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="film">
+    <div class="frame f-film grain" role="img" aria-label="Film frame">
+      <i class="leak"></i>
+      <svg class="spk"><use href="#spk"/></svg>
+      <i class="bar top"></i><i class="bar bot"></i>
+      <p class="tc">REEL 02 · 24FPS</p>
+      <p class="cap sub">everything is frequency</p>
+    </div>
+    <div>
+      <h3>Film / analogue</h3>
+      <p class="ref">Ties into the moody film look</p>
+      <p class="look">A treatment more than graphics: grain, halation glowing round the highlights, a touch of gate weave, light leaks on the cuts, warm grade and letterbox. Small italic serif subtitles instead of big captions.</p>
+      <dl>
+        <dt>Templates</dt><dd>Grain and halation grade, light leak transition, letterbox, gate weave, serif subtitle</dd>
+        <dt>Type</dt><dd>Baskerville italic</dd>
+        <dt>Sound</dt><dd>Projector whirr, room tone, music-led</dd>
+        <dt>Pacing</dt><dd>Slow, lets lines breathe</dd>
+        <dt>Best for</dt><dd>Story, reflection, brand films</dd>
+      </dl>
+    </div>
+  </article>
+</section>
+
+<section class="group">
+  <h2>Also saved</h2>
+  <p>Talking head too. Second in line after the first batch, or used as accents inside other packs.</p>
+
+  <article class="style" id="whiteboard">
+    <div class="frame f-white" role="img" aria-label="Whiteboard frame">
+      <svg class="spk"><use href="#spk"/></svg>
+      <p class="hand h1">frequency</p>
+      <i class="ring"></i>
+      <svg viewBox="0 0 100 178" aria-hidden="true"><path d="M20 30 C30 52 40 60 58 70" fill="none" stroke="#1b1b1b" stroke-width="1.2"/><path d="M52 66 L58 70 L52 73" fill="none" stroke="#1b1b1b" stroke-width="1.2"/><path d="M8 92 C22 95 32 89 44 93" fill="none" stroke="#1e5bd8" stroke-width="1.2"/></svg>
+      <p class="hand h2">it's all waves</p>
+    </div>
+    <div>
+      <h3>Whiteboard / sketch</h3>
+      <p class="look">Hand-drawn arrows, circles, underlines and doodles draw on around him as he talks. Simple to build, great for explaining.</p>
+      <dl>
+        <dt>Templates</dt><dd>Draw-on arrow, circle, underline, sketch diagram, handwritten note</dd>
+        <dt>Type</dt><dd>Caveat or a marker hand</dd>
+        <dt>Sound</dt><dd>Marker squeak, pen scratch</dd>
+        <dt>Best for</dt><dd>Explainers, frameworks</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="neon">
+    <div class="frame f-neon" role="img" aria-label="Neon frame">
+      <i class="ring"></i>
+      <svg class="spk"><use href="#spk"/></svg>
+      <p class="cap word">FREQUENCY</p>
+    </div>
+    <div>
+      <h3>Neon / glow</h3>
+      <p class="look">Dark grade with glowing outlined type and shapes. Close to resonance, simpler and lighter to render.</p>
+      <dl>
+        <dt>Templates</dt><dd>Neon word, glow ring, outline shape, flicker on</dd>
+        <dt>Type</dt><dd>Helvetica Bold as outline</dd>
+        <dt>Sound</dt><dd>Electric buzz, synth hits</dd>
+        <dt>Best for</dt><dd>Night shoots, music, energy</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="vhs">
+    <div class="frame f-vhs" role="img" aria-label="VHS frame">
+      <svg class="spk"><use href="#spk"/></svg>
+      <i class="lines"></i><i class="tear"></i>
+      <p class="osd rec"><b>●</b> REC</p>
+      <p class="osd play">PLAY ▶</p>
+      <p class="osd date">OCT 19 2026  00:01:24</p>
+    </div>
+    <div>
+      <h3>VHS / camcorder</h3>
+      <p class="look">Scan lines, a REC dot, timecode, colour bleed and tracking glitches. Instant nostalgia.</p>
+      <dl>
+        <dt>Templates</dt><dd>OSD overlay, scan lines, tracking glitch, colour bleed, rewind transition</dd>
+        <dt>Type</dt><dd>VT323</dd>
+        <dt>Sound</dt><dd>Tape whirr, button clunk, rewind squeal</dd>
+        <dt>Best for</dt><dd>Throwbacks, origin stories, behind the scenes</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="glitch">
+    <div class="frame f-glitch" role="img" aria-label="Glitch frame">
+      <svg class="spk g3"><use href="#spk"/></svg>
+      <svg class="spk g1"><use href="#spk"/></svg>
+      <svg class="spk g2"><use href="#spk"/></svg>
+      <i class="slice s1"></i><i class="slice s2"></i>
+      <p class="cap word">INTERFERE</p>
+    </div>
+    <div>
+      <h3>Glitch / datamosh</h3>
+      <p class="look">RGB split, pixel sort and frame tears on the cuts. An accent inside other packs more than a whole style.</p>
+      <dl>
+        <dt>Templates</dt><dd>RGB split hit, slice tear, pixel sort transition, glitch word</dd>
+        <dt>Type</dt><dd>Space Mono Bold</dd>
+        <dt>Sound</dt><dd>Digital stutter, static burst</dd>
+        <dt>Best for</dt><dd>Accents on "break", "interfere", pattern interrupts</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="resonance">
+    <div class="frame f-res" role="img" aria-label="Resonance frame">
+      <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 Q6 6 12 20 T24 20 T36 20 T48 20 T60 20 T72 20 T84 20 T96 20 T108 20" fill="none" stroke="#34c6d9" stroke-width=".6"/><path d="M0 20 Q6 32 12 20 T24 20 T36 20 T48 20 T60 20 T72 20 T84 20 T96 20 T108 20" fill="none" stroke="#e0b25c" stroke-width=".6" opacity=".8"/></svg>
+      <svg class="spk"><use href="#spk"/></svg>
+      <div class="card"><b>res·o·nance</b><span>noun. two waves amplifying each other</span></div>
+      <p class="cap">amplifying</p>
+    </div>
+    <div>
+      <h3>Resonance <span class="tag">Built</span></h3>
+      <p class="ref">jobs/resonance, v5</p>
+      <p class="look">Motion graphics driven by meaning, with him cut out in front of the graphics. Thin glowing wave lines, a dictionary card, a cymatics plate, teal captions, dense SFX and music cuts.</p>
+      <dl>
+        <dt>Templates</dt><dd>Dictionary card, now playing, label pills, wave lines, cymatics plate, burst, title behind head</dd>
+        <dt>Type</dt><dd>Helvetica</dd>
+        <dt>Sound</dt><dd>Risers, booms, whooshes, music drops</dd>
+        <dt>Best for</dt><dd>Big idea reels, science, hero content</dd>
+      </dl>
+    </div>
+  </article>
+</section>
+
+<section class="group">
+  <h2>B-roll led</h2>
+  <p>These live or die on the b-roll library, which needs filling before they're worth building.</p>
+
+  <article class="style" id="stack">
+    <div class="frame f-stack" role="img" aria-label="Fast b-roll stack frame">
+      <i class="tile t1"></i><i class="tile t2"></i><i class="tile t3"></i><i class="tile t4"></i><i class="tile t5"></i>
+      <svg class="spk"><use href="#spk"/></svg>
+      <p class="hook">Everything in your life is a frequency</p>
+      <p class="lbl">B-ROLL × 5</p>
+    </div>
+    <div>
+      <h3>Fast b-roll stack</h3>
+      <p class="ref">The Kallaway lane</p>
+      <p class="look">A cut every one to two seconds, b-roll covering most of the reel, him cut out with a white edge over the footage, and a boxed text hook up top.</p>
+      <dl>
+        <dt>Templates</dt><dd>Cut-out with white stroke, boxed hook, b-roll grid, picture-in-picture, whip transition</dd>
+        <dt>Type</dt><dd>Helvetica Black</dd>
+        <dt>Sound</dt><dd>Whoosh on every cut, risers, dense SFX</dd>
+        <dt>Needs</dt><dd>A deep, well-labelled b-roll library</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="cinematic">
+    <div class="frame f-cine grain" role="img" aria-label="Cinematic frame">
+      <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 L20 18 L34 26 L52 10 L70 24 L84 16 L100 26 L100 40 L0 40Z" fill="#1d2827"/></svg>
+      <i class="bar top"></i><i class="bar bot"></i>
+      <p class="chap">CHAPTER ONE</p>
+      <p class="cap sub">Everything is frequency.</p>
+    </div>
+    <div>
+      <h3>Cinematic / documentary</h3>
+      <p class="look">Slow and music-led. Wide letterbox, long b-roll holds, chapter cards and small subtitles.</p>
+      <dl>
+        <dt>Templates</dt><dd>Chapter card, letterbox, slow push, subtitle, title sequence</dd>
+        <dt>Type</dt><dd>Baskerville, spaced Helvetica caps</dd>
+        <dt>Sound</dt><dd>Score, ambience, sound design under b-roll</dd>
+        <dt>Needs</dt><dd>Cinematic b-roll, ideally shot for the piece</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="minimal">
+    <div class="frame f-min grain" role="img" aria-label="Aesthetic minimal frame">
+      <i class="shaft"></i>
+      <p class="txt">everything you feel is a frequency.<small>EOIN WELLS</small></p>
+    </div>
+    <div>
+      <h3>Aesthetic minimal</h3>
+      <p class="ref">The Dan Koe lane</p>
+      <p class="look">Dark, moody b-roll, a small serif line of text and a lot of empty space. Quiet confidence.</p>
+      <dl>
+        <dt>Templates</dt><dd>Small serif line, fade text, slow b-roll hold, signature card</dd>
+        <dt>Type</dt><dd>Bodoni italic, spaced Helvetica caps</dd>
+        <dt>Sound</dt><dd>Ambient pad, almost nothing else</dd>
+        <dt>Needs</dt><dd>Moody b-roll library</dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="style" id="doc">
+    <div class="frame f-doc grain" role="img" aria-label="Documentary explainer frame">
+      <svg viewBox="0 0 100 178" aria-hidden="true"><path d="M10 40 C25 30 40 46 52 36 C64 26 80 34 90 44 L86 70 C70 76 60 64 46 72 C34 80 20 70 12 74Z" fill="#b9c4a8" stroke="#6c7660" stroke-width=".6"/><path d="M24 54 C40 60 52 46 72 56" fill="none" stroke="#c8261d" stroke-width="1" stroke-dasharray="2 1.6"/><circle cx="72" cy="56" r="2.2" fill="#c8261d"/><circle cx="24" cy="54" r="1.6" fill="#2a2620"/></svg>
+      <p class="label">FIG. 1: WHERE IT STARTED</p>
+      <div class="photo"><svg class="spk"><use href="#spk"/></svg></div>
+    </div>
+    <div>
+      <h3>Documentary explainer</h3>
+      <p class="ref">The Johnny Harris lane</p>
+      <p class="look">Maps with dashed routes and pins, archive photos cut out and taped on, paper textures and typewriter labels. Shares a lot with paper cut-out.</p>
+      <dl>
+        <dt>Templates</dt><dd>Map with route, pin drop, archive photo, typewriter label, document zoom</dd>
+        <dt>Type</dt><dd>Special Elite, Baskerville</dd>
+        <dt>Sound</dt><dd>Paper, typewriter, map pin thunk</dd>
+        <dt>Needs</dt><dd>Maps and archive imagery per topic</dd>
+      </dl>
+    </div>
+  </article>
+</section>
+</div>

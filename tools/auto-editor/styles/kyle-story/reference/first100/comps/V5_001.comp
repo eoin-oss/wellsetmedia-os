@@ -1,0 +1,153 @@
+Composition {
+	CurrentTime = 0,
+	RenderRange = { 0, 29 },
+	GlobalRange = { 0, 29 },
+	CurrentID = 217,
+	HiQ = true,
+	PlaybackUpdateMode = 0,
+	StereoMode = false,
+	Version = "DaVinci Resolve Studio 21.1.1.0010",
+	SavedOutputs = 0,
+	HeldTools = 0,
+	DisabledTools = 0,
+	LockedTools = 0,
+	AudioOffset = 0,
+	Resumable = true,
+	OutputClips = {
+	},
+	CustomData = { TEMPLATE_ID = "Text+" },
+	Tools = {
+		Template = TextPlus {
+			CtrlWZoom = false,
+			Inputs = {
+				MotionBlur = Input { Value = 1, },
+				Quality = Input { Value = 6, },
+				ShutterAngle = Input { Value = 326, },
+				GlobalOut = Input { Value = 29, },
+				Width = Input { Value = 1920, },
+				Height = Input { Value = 1080, },
+				UseFrameFormatSettings = Input { Value = 1, },
+				LayoutType = Input { Value = 1, },
+				SelectTransform = Input { Value = 1, },
+				CharacterSpacing = Input { Value = 0.96, },
+				TransformSize = Input { Value = 1, },
+				ShadingGradient1 = Input {
+					Value = Gradient {
+						Colors = {
+							[0] = { 0.803, 0.803, 0.803, 1 },
+							[1] = { 1, 0.536, 0.847808000000007, 1 }
+						}
+					},
+				},
+				ShadingMappingAngle1 = Input { Value = 16.7, },
+				ShadingMappingLevel1 = Input { Value = 3, },
+				StyledText = Input {
+					SourceOp = "Follower1",
+					Source = "StyledText",
+				},
+				Font = Input { Value = "Helvetica", },
+				Style = Input { Value = "Bold", },
+				VerticalJustificationNew = Input { Value = 3, },
+				HorizontalJustificationNew = Input { Value = 3, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 223.765, 401.999 } },
+			Version = 1
+		},
+		Path1Displacement = BezierSpline {
+			SplineColor = { Red = 255, Green = 0, Blue = 255 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 0, RH = { 0.65, 0.64 }, Flags = { Linear = true, LockedY = true } },
+				[20] = { 1, LH = { 1.2, 1.054 }, Flags = { LockedY = true } }
+			}
+		},
+		Path1 = PolyPath {
+			DrawMode = "InsertAndModify",
+			CtrlWZoom = false,
+			Inputs = {
+				Displacement = Input {
+					SourceOp = "Path1Displacement",
+					Source = "Value",
+				},
+				PolyLine = Input {
+					Value = Polyline {
+						Points = {
+							{ Linear = true, LockY = true, X = -0.5, Y = -1.5, RX = 0, RY = 0.333333333333333 },
+							{ Linear = true, LockY = true, X = -0.5, Y = -0.5, LX = 0, LY = -0.333333333333333 }
+						}
+					},
+				}
+			},
+		},
+		MediaOut1 = Saver {
+			Inputs = {
+				Index = Input { Value = "0", },
+				Input = Input {
+					SourceOp = "Template",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 715, 49.5 } },
+		},
+		Follower1 = StyledTextFollower {
+			CtrlWZoom = false,
+			Inputs = {
+				Order = Input { Value = 7, },
+				Delay = Input { Value = 0.6, },
+				Text = Input {
+					Value = StyledText {
+						Value = "every single day."
+					},
+				},
+				SelectTransform = Input { Value = 2, },
+				LineOffset = Input {
+					SourceOp = "Path1",
+					Source = "Position",
+				},
+				TransformRotation = Input { Value = 1, },
+				Softness1 = Input { Value = 1, },
+				Softness2 = Input { Value = 1, },
+				Softness3 = Input { Value = 1, },
+				Softness4 = Input { Value = 1, },
+				Softness5 = Input { Value = 1, },
+				Softness6 = Input { Value = 1, },
+				Softness7 = Input { Value = 1, },
+				Softness8 = Input { Value = 1, }
+			},
+		}
+	},
+	Frames = {
+	},
+	Prefs = {
+		Comp = {
+			Interactive = {
+				Proxy = {
+					Scale = 1,
+				},
+			},
+			Views = {
+				RightView = {
+					Viewer = {
+						Layer = ":Default"
+					}
+				},
+			},
+			Paths = {
+				Map = {
+					["ResolveCaches:"] = "/Users/eoinwells/Desktop/finished video projects/CacheClip/604b2ea7-b486-4d0b-98e9-6328ac5f6e44/38a6c76b-af06-418a-b283-b8b676d1c447/f9759072-0aae-4681-a7a8-47476d144d45/Fusion",
+				},
+			},
+			FrameFormat = {
+				Rate = 25,
+				GuideRatio = 1.77777777777778,
+				DepthFull = 3,
+				DepthPreview = 3,
+				DepthInteractive = 3,
+			},
+			LastFile = "/Users/sergei2002/Downloads/menyou.jpg",
+			Unsorted = {
+				GlobalEnd = 29
+			},
+		}
+	},
+}

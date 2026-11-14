@@ -1,0 +1,63 @@
+# Card spec per reel: for every segment in clients/kyle-ritchie/content/evil-overlays/breakdown/data.py,
+# the cards on screen (left->right). ("key", join_sec) = second card arrives at that absolute second.
+# Keys: web images (QUERIES) or K:<name> Kyle stills (KYLE_SHOTS). Titles/tag/captions are drawn in Fusion.
+QUERIES = {
+ # v4 read people
+ "eye": "human eye extreme close up black and white film", "mind": "head silhouette thoughts leaving surreal dark art",
+ "bodylang": "vintage body language crossed arms illustration", "faceless": "faceless man in suit dark surreal art",
+ "ekman": "paul ekman psychologist portrait", "facs": "facial muscles anatomy vintage chart",
+ "mask": "theatre mask dark black and white", "faces_strip": "contact sheet same face expressions black and white",
+ "ecg_flat": "flat line heart monitor black and white", "two_table": "two men talking across table film noir",
+ "magnifier": "magnifying glass vintage black and white", "stopwatch": "vintage stopwatch black and white",
+ "eye_watch": "eye watching through dark surreal", "hands_table": "hands on table interrogation black and white",
+ "blink": "eye closing film still black and white", "needle_spike": "polygraph needle graph lie detector",
+ "price_tag": "price tag black and white aesthetic", "ring": "wedding ring hand black and white film",
+ "flushed": "face blushing red cheeks portrait dark", "neck": "hand touching neck nervous black and white",
+ "cluster_lights": "three lights in darkness aesthetic", "touch_face": "man touching face hand black and white portrait",
+ "cold_breath": "breath in cold air dark portrait", "polaroids": "polaroids fanned out black and white",
+ "chess": "chess piece dark aesthetic", "key": "old key dark aesthetic",
+ # v1 self-sabotage
+ "brain": "anatomical brain vintage illustration black and white", "tied_self": "man tangled in his own strings surreal dark art",
+ "planner": "planner covered in sticky notes overwhelmed", "melting_clock": "melting clock surreal black and white",
+ "libet": "benjamin libet neuroscientist", "electrodes": "eeg electrodes scalp vintage experiment black and white",
+ "hand_lift": "hand raised reaching black and white aesthetic", "eeg": "vintage eeg brain wave printout",
+ "name_tag": "hello my name is sticker", "scroll_phone": "thumb scrolling phone in dark",
+ "declined_call": "declined phone call screen dark", "terminal": "green code on old computer terminal",
+ "reflection": "man staring at his reflection mirror dark", "almost_touch": "two hands almost touching dark aesthetic",
+ "window_light": "open window light pouring in dark room", "chess_move": "hand moving chess piece black and white",
+ "roots": "tree roots dark aesthetic black and white", "jar_labels": "vintage jars with labels black and white",
+ "iceberg": "iceberg tip underwater dark", "child_window": "child alone looking out window black and white",
+ "lit_within": "figure glowing from within dark surreal art",
+ # v3 money
+ "wallet": "open leather wallet black and white", "card_reader": "hand hesitating card payment terminal dark",
+ "money_magnet": "i am a money magnet affirmation", "counting_coins": "man counting coins in dark film still",
+ "klontz": "dr brad klontz financial psychologist", "two_houses": "two identical houses one lit one dark",
+ "old_notes": "old banknotes vintage black and white", "kid_kitchen": "child at kitchen table vintage black and white photo",
+ "script_page": "typewriter script page close up", "bare_tree": "bare tree alone black and white",
+ "vintage_family": "vintage family dinner table 1960s black and white", "fist_notes": "fist clenched holding money black and white",
+ "faded_photo": "old family photo faded face", "mum_head_hands": "woman head in hands kitchen table black and white",
+ "notes_table": "cash spread on table black and white", "cassette": "old cassette tape black and white",
+ "hand_pull_back": "hand pulling back hesitation black and white", "card_tap": "contactless card tap black and white",
+}
+KYLE_SHOTS = {  # label search terms over index/labels_*.jsonl (people incl. kyle)
+ "stage_calm": ["seminar", "stage"], "table": ["table", "talk"], "crowd": ["seminar", "audience"],
+ "gym": ["gym"], "seminar_stage": ["seminar", "stage"], "partner": ["woman", "kyle"],
+ "client": ["seminar", "talking"], "porsche": ["porsche"], "network": ["dinner", "table"],
+}
+CARDS = {
+ "v4": [ {"top": "eye", "cards": ["mind"]}, ["mind"], ["bodylang"], ["bodylang", "faceless"],
+  ["K:stage_calm"], ["K:stage_calm", "K:table"], ["K:crowd"], ["ekman"], ["ekman", "facs"], ["mask"], ["mask", "faces_strip"],
+  [], ["ecg_flat"], ["two_table", "magnifier"], [], ["stopwatch", ("eye_watch", 36.0)], ["hands_table", ("blink", 40.6)],
+  ["needle_spike"], ["price_tag"], ["price_tag", "ring"], [], ["flushed"], ["flushed", "neck"], ["cluster_lights"], [],
+  ["touch_face"], ["touch_face", "cold_breath"], [], ["polaroids"], ["chess", ("key", 79.7)], {"end": "LIMITLESS"} ],
+ "v1": [ {"top": "brain", "cards": ["tied_self"]}, ["tied_self"], ["planner"], ["planner", "melting_clock"],
+  ["K:gym"], ["K:gym", "K:seminar_stage"], ["K:partner"], ["libet"], ["libet", "electrodes"], ["hand_lift"], ["hand_lift", "eeg"],
+  [], ["name_tag"], ["scroll_phone"], ["scroll_phone", "declined_call"], [], ["terminal"], ["terminal", "reflection"],
+  ["almost_touch"], ["window_light"], ["window_light", "cold_breath"], [], ["chess_move"], ["roots"], ["jar_labels"],
+  ["jar_labels", "iceberg"], [], ["child_window"], ["child_window", "K:client"], ["lit_within"], {"end": "MIND"} ],
+ "v3": [ {"top": "wallet", "cards": ["card_reader"]}, ["card_reader"], ["money_magnet"], ["money_magnet", "counting_coins"],
+  ["K:seminar_stage"], ["K:porsche"], ["K:network"], ["klontz"], ["klontz", "two_houses"], ["old_notes"], ["old_notes", "kid_kitchen"],
+  [], ["script_page"], ["bare_tree"], ["bare_tree", "vintage_family"], ["fist_notes"], [], ["faded_photo"], ["mum_head_hands"],
+  ["mum_head_hands", "notes_table"], [], ["cassette"], ["cassette", "child_window"], ["hand_pull_back"], [], ["card_tap"],
+  ["card_tap", "cold_breath"], {"end": "MONEY"} ],
+}

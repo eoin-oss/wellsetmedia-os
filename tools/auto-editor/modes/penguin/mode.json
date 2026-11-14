@@ -1,0 +1,87 @@
+{
+ "name": "penguin",
+ "locked": "2026-11-11",
+ "reference_job": "jobs/glasgow-bodies",
+ "frame": {
+  "w": 1920,
+  "h": 1080,
+  "fps": 29.97
+ },
+ "cut": {
+  "pause_rel_db": -22,
+  "gap_min_s": 0.16,
+  "pad_in_s": 0.06,
+  "pad_out_s": 0.1,
+  "min_piece_frames": 6,
+  "jump_zoom": [
+   1.0,
+   1.08
+  ],
+  "sentence_punch": 1.12
+ },
+ "opener": {
+  "canvas": "#f4f2ee",
+  "inset_end_size": 0.8,
+  "inset_curve": "blur-in <=1s (24px->0) + ease-out cubic zoom 1.0->0.80",
+  "rapid_cuts": 7,
+  "rapid_frames": [
+   5,
+   6
+  ],
+  "strobe": "invert T and T+2",
+  "captions": "BIG, not caption_px (77% skip on v2.9 with small words)",
+  "text_hook": "none: the spoken line + the picture are the hook"
+ },
+ "text": {
+  "font": "Helvetica Neue Bold",
+  "colour": "white only; ink only on white cards or named shots",
+  "caption_px": 46,
+  "caption_pos": [
+   0.2,
+   0.24
+  ],
+  "halo_if_contrast_below": 3.0,
+  "payoff_px_max": 300,
+  "payoff_width_max": 0.72,
+  "hero_width": 0.92,
+  "lead_px": 40,
+  "letter_ramp_f": 8,
+  "letter_stagger_f": 2,
+  "lead_typeon": "1 char/frame",
+  "margin": 0.05
+ },
+ "list_cards": {
+  "alternate": [
+   [
+    "#050505",
+    "#ffffff"
+   ],
+   [
+    "#ffffff",
+    "#050505"
+   ]
+  ],
+  "px_max": 150,
+  "cut_on": "measured word onsets"
+ },
+ "zoom": {
+  "return_from": 1.22,
+  "return_curve": "0.6 easeOutCubic + 0.4 linear over rest of shot",
+  "cutaway_push": 1.1,
+  "hook_payoff_push": "1.12 linear"
+ },
+ "sound": {
+  "tick": "assets/tick.wav (Short foley 14, -30 dBFS)",
+  "riser": "Riser 4 compressed, frame 1 -> strobe, -30 dB peak",
+  "flash": "16. FLASH/4E_02 D.EF Flash.wav, -24 dB peak",
+  "music_lufs": -37,
+  "banned": [
+   "Vintage SFX/Click.wav (shutter)",
+   "whooshes",
+   "impacts",
+   "Purpose Is Glorious (Loki)"
+  ]
+ },
+ "variety": "base look locked; devices vary per video, proposed at Gate 1",
+ "render": "only when Eoin says"
+}

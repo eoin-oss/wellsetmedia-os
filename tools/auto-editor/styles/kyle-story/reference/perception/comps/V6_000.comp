@@ -1,0 +1,172 @@
+Composition {
+	CurrentTime = 0,
+	RenderRange = { 3600, 3622 },
+	GlobalRange = { 3600, 3622 },
+	CurrentID = 21,
+	HiQ = true,
+	PlaybackUpdateMode = 0,
+	StereoMode = false,
+	Version = "DaVinci Resolve Studio 21.1.1.0010",
+	SavedOutputs = 0,
+	HeldTools = 0,
+	DisabledTools = 0,
+	LockedTools = 0,
+	AudioOffset = 0,
+	Resumable = true,
+	OutputClips = {
+	},
+	Tools = {
+		MediaIn1 = Loader {
+			ExtentSet = true,
+			CustomData = { MediaProps = {
+					MEDIA_AUDIO_TRACKS_DESC = {
+						{
+							MEDIA_AUDIO_BIT_DEPTH = 32,
+							MEDIA_AUDIO_FRAME_RATE = 24,
+							MEDIA_AUDIO_NUM_CHANNELS = 2,
+							MEDIA_AUDIO_SAMPLE_RATE = 48000,
+							MEDIA_AUDIO_START_TIME = 3600,
+							MEDIA_AUDIO_TRACK_ID = "Timeline Audio",
+							MEDIA_AUDIO_TRACK_NAME = "Timeline Audio [Timeline 1]"
+						}
+					},
+					MEDIA_AUDIO_TRACKS_NUM = 1,
+					MEDIA_HAS_AUDIO = true,
+					MEDIA_HEIGHT = 1080,
+					MEDIA_ID = "",
+					MEDIA_IS_SOURCE_RES = false,
+					MEDIA_MARK_IN = 3600,
+					MEDIA_MARK_OUT = 3622,
+					MEDIA_NAME = "Smooth Zoom out",
+					MEDIA_NUM_FRAMES = 23,
+					MEDIA_PAR = 1,
+					MEDIA_SRC_FRAME_RATE = 25,
+					MEDIA_START_FRAME = 3600,
+					MEDIA_WIDTH = 1920,
+				}, },
+			Inputs = {
+				GlobalIn = Input { Value = 3600, },
+				GlobalOut = Input { Value = 3622, },
+				AudioTrack = Input { Value = FuID { "Timeline Audio" }, },
+				Layer = Input { Value = "0", },
+				ClipTimeStart = Input { Value = 3600, },
+				ClipTimeEnd = Input { Value = 3622, },
+				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+				DeepOutputMode = Input {
+					Value = 0,
+					Disabled = true,
+				},
+				LeftAudio = Input {
+					SourceOp = "Left",
+					Source = "Data",
+				},
+				RightAudio = Input {
+					SourceOp = "Right",
+					Source = "Data",
+				},
+			},
+			ViewInfo = OperatorInfo { Pos = { 130.291, 259.402 } },
+			Version = 1,
+			Clips = {
+				Clip {
+					ID = "Clip1",
+					Length = 23,
+					LengthSetManually = true,
+					GlobalStart = 3600,
+					GlobalEnd = 3622,
+					TrimIn = 3600,
+					TrimOut = 3622,
+				}
+			}
+		},
+		MediaOut1 = Saver {
+			Inputs = {
+				Index = Input { Value = "0", },
+				Input = Input {
+					SourceOp = "Transform1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 605, 49.5 } },
+		},
+		Transform1 = Transform {
+			CtrlWZoom = false,
+			Inputs = {
+				Size = Input {
+					SourceOp = "Transform1Size",
+					Source = "Value",
+				},
+				Input = Input {
+					SourceOp = "MediaIn1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 240.291, 259.402 } },
+		},
+		Right = AudioDisplay {
+			CtrlWZoom = false,
+		},
+		Left = AudioDisplay {
+			CtrlWZoom = false,
+		},
+		Transform1Size = BezierSpline {
+			SplineColor = { Red = 225, Green = 0, Blue = 225 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 1.278, RH = { 2, 1.114 }, Flags = { Linear = true } },
+				[35] = { 1, LH = { 17.6, 1 } }
+			}
+		}
+	},
+	Frames = {
+	},
+	Prefs = {
+		Comp = {
+			Interactive = {
+				Proxy = {
+					Scale = 1,
+				},
+			},
+			Views = {
+				RightView = {
+					Viewer = {
+						Layer = ":Default"
+					},
+					SideB = { PrevCtrlInactiveColor = 4278255360, PickW = 1, PickH = 1, PrevCtrlActiveColor = 4278190335, Viewer = { EnableLUTs = false, LUTPlugin = "FusionViewLUT", FitMarginY = 0, FitMarginX = 0, FitMarginType = 0, FarZ = -1000, NearZ = 0 } }
+				},
+				LeftView = {
+					SideB = { PrevCtrlInactiveColor = 4278255360, PickW = 1, PickH = 1, PrevCtrlActiveColor = 4278190335, Viewer = { EnableLUTs = false, LUTPlugin = "FusionViewLUT", FitMarginY = 0, FitMarginX = 0, FitMarginType = 0, FarZ = -1000, NearZ = 0 } }
+				},
+				View1 = {
+					PrevCtrlInactiveColor = 4278255360,
+					PickW = 1,
+					PickH = 1,
+					PrevCtrlActiveColor = 4278190335,
+					SideB = { PrevCtrlInactiveColor = 4278255360, PickW = 1, PickH = 1, PrevCtrlActiveColor = 4278190335, Viewer = { EnableLUTs = false, LUTPlugin = "FusionViewLUT", FitMarginY = 0, FitMarginX = 0, FitMarginType = 0, FarZ = -1000, NearZ = 0 } }
+				},
+				Defaults = {
+					Viewer = {
+						Layer = "",
+					},
+				},
+			},
+			Paths = {
+				Map = {
+					["ResolveCaches:"] = "/Users/eoinwells/Desktop/finished video projects/CacheClip/02347228-ff1b-47b7-b1f0-1f4674913b44/572c6bbc-d412-4411-8cc3-2d27b49ecb3a/dd589d48-6334-43e9-97ad-0c3510beed3e/Fusion",
+				},
+			},
+			FrameFormat = {
+				Rate = 25,
+				GuideRatio = 1.77777777777778,
+				DepthFull = 3,
+				DepthPreview = 3,
+				DepthInteractive = 3,
+			},
+			LastFile = "/Users/shauryavij/Downloads/wrld-18/",
+			Unsorted = {
+				GlobalStart = 3600,
+				GlobalEnd = 3622
+			},
+		}
+	},
+}

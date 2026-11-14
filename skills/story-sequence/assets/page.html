@@ -1,0 +1,177 @@
+<title>{{TITLE}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: a contact-sheet row of 9:16 story frames, each with its own edit panel underneath */
+:root{
+  --bg:#f3f3f1; --panel:#ffffff; --ink:#151515; --muted:#6b6b66; --line:#dcdcd6;
+  --accent:#e4342c; --ok:#2f7d4f;
+  --ui:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111110; --panel:#1b1b1a; --ink:#eeeeea; --muted:#9a9a93; --line:#2e2e2c; --accent:#ff5a4f; --ok:#5cc18a; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111110; --panel:#1b1b1a; --ink:#eeeeea; --muted:#9a9a93; --line:#2e2e2c; --accent:#ff5a4f; --ok:#5cc18a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;max-width:1800px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin-bottom:6px}
+h1{font-size:22px;letter-spacing:-.01em;margin:0}
+.status{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.status.saved{color:var(--ok)} .status.err{color:var(--accent)}
+.help{color:var(--muted);max-width:75ch;line-height:1.5;margin:4px 0 18px}
+.help code{font-family:var(--mono);font-size:12px;background:var(--panel);border:1px solid var(--line);padding:1px 5px;border-radius:4px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.num{font-family:var(--mono);font-size:11px;color:var(--muted);padding:8px 10px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.num button{font:inherit;background:none;border:1px solid var(--line);color:var(--ink);border-radius:5px;padding:2px 7px;cursor:pointer}
+.num button:hover{border-color:var(--ink)}
+.frame{position:relative;aspect-ratio:var(--ar,9/16);max-width:100%;background:#000;overflow:hidden;container-type:inline-size}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.safe{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.28);pointer-events:none}
+.grp{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:calc(14cqw/10.8)}
+.box{background:#080605;color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:700;
+  font-size:calc(var(--sz,42)*1cqw/10.8);line-height:1.22;padding:calc(11cqw/10.8) calc(24cqw/10.8);
+  border-radius:calc(12cqw/10.8);max-width:calc(928cqw/10.8);text-align:center;box-sizing:border-box}
+.box.w{background:var(--acc,#fff);color:var(--accInk,#080605)}
+.box .r{color:#e4342c}
+.box .g{color:#34d366}
+.box.hot{background:#e4342c;color:#fff}.box.hot .r,.box.hot .g{color:#fff}
+.box.w .g{color:#15803d}
+.ed{padding:10px;display:flex;flex-direction:column;gap:8px}
+label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:flex;flex-direction:column;gap:4px}
+textarea,select{font:13px/1.45 var(--ui);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 8px;width:100%;box-sizing:border-box;text-transform:none;letter-spacing:0}
+textarea{resize:vertical;min-height:64px}
+textarea:focus,select:focus,button:focus-visible,input:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+input[type=range]{width:100%;accent-color:var(--ink)}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:40px 20px;text-align:center;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 14px}.tabs:empty{display:none}
+.tabs a{font:500 13px var(--ui);color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px}
+.tabs a[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.add{margin-top:18px;font:inherit;background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:9px 14px;cursor:pointer}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>{{TITLE}}</h1>
+    <span class="status" id="status">Loading…</span>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Stories"></nav>
+  <p class="help">Edit any frame and it saves for both of us. One line = one black box. <code>[[words]]</code> turns words red (pain only). <code>{{words}}</code> turns them green (the win). Start a line with <code>! </code> for a red box (the hook). Start a line with <code>* </code> for the white box (one per frame max). End every frame but the last on <code>...</code>. The dashed lines mark the Instagram safe area.</p>
+  <div id="grid" class="grid"><div class="empty">The first draft is on its way. Your 8 frames show up here as soon as it lands.</div></div>
+  <button class="add" id="add" hidden>Add a frame</button>
+</div>
+
+<script>
+/* One page can hold several sequences (e.g. a week: mon, wed, fri). Each is db doc story/<key>. One story = [["main","Story"]]. */
+const STORIES={{STORIES}};
+let PHOTOS=[], FH=1920, SAFE=[250,1580]; /* filled from the doc's "photos" list (stems of the files published under photos/) */
+let state=null, db=null, ref=null, dirty=false, timer=null;
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function setStatus(t,cls){const s=$("#status");s.textContent=t;s.className="status "+(cls||"")}
+
+function lineHTML(t){
+  let w=false, hot=false; if(t.startsWith("* ")){w=true;t=t.slice(2)} else if(t.startsWith("! ")){hot=true;t=t.slice(2)}
+  const h=esc(t).replace(/\[\[(.+?)\]\]/g,'<span class="r">$1</span>').replace(/\{\{(.+?)\}\}/g,'<span class="g">$1</span>');
+  return `<div class="box${w?" w":""}${hot?" hot":""}">${h}</div>`;
+}
+function groupHTML(g,sz){
+  const lines=(g.text||"").split("\n").map(s=>s.trim()).filter(Boolean);
+  if(!lines.length)return"";
+  const pos=g.at==="top"?`top:${g.y/(FH/100)}%`:`bottom:${100-g.y/(FH/100)}%`;
+  return `<div class="grp" style="${pos};--sz:${sz}">${lines.map(lineHTML).join("")}</div>`;
+}
+function frameHTML(f){
+  return `<img src="photos/${f.photo}.jpg" alt="" style="object-position:${f.fx*100}% ${f.fy*100}%;transform:scale(${f.zoom||1});transform-origin:${f.fx*100}% ${f.fy*100}%">
+  <div class="safe" style="top:${SAFE[0]/(FH/100)}%"></div><div class="safe" style="top:${SAFE[1]/(FH/100)}%"></div>
+  ${groupHTML({at:"top",y:f.topY,text:f.top},f.size||42)}${groupHTML({at:"bottom",y:f.botY,text:f.bottom},f.size||42)}`;
+}
+function render(){
+  const g=$("#grid");
+  if(!state||!state.frames){return}
+  $("#add").hidden=false; PHOTOS=state.photos||state.frames.map(f=>f.photo);
+  const car=state.format==="carousel"; FH=car?1350:1920; SAFE=car?[80,1270]:[250,1580];
+  document.documentElement.style.setProperty("--ar",car?"4/5":"9/16");
+  const th=state.theme||{};
+  document.documentElement.style.setProperty("--acc",th.accent||"#ffffff");
+  document.documentElement.style.setProperty("--accInk",th.accentInk||"#080605");
+  if(state.title){$("h1").textContent=state.title}
+  g.innerHTML=state.frames.map((f,i)=>`
+  <article class="card" data-i="${i}">
+    <div class="num"><span>FRAME ${String(i+1).padStart(2,"0")} · ${f.photo}</span>
+      <span><button data-a="left" aria-label="Move left">←</button> <button data-a="right" aria-label="Move right">→</button> <button data-a="del" aria-label="Delete frame">✕</button></span></div>
+    <div class="frame" id="fr${i}">${frameHTML(f)}</div>
+    <div class="ed">
+      <label>Top text<textarea id="top${i}" data-k="top">${esc(f.top||"")}</textarea></label>
+      <label>Top position<input id="topY${i}" type="range" min="60" max="${FH-300}" data-k="topY" value="${f.topY}"></label>
+      <label>Bottom text<textarea id="bot${i}" data-k="bottom">${esc(f.bottom||"")}</textarea></label>
+      <label>Bottom position<input id="botY${i}" type="range" min="300" max="${FH}" data-k="botY" value="${f.botY}"></label>
+      <div class="row">
+        <label>Photo<select id="ph${i}" data-k="photo">${PHOTOS.map(p=>`<option${p===f.photo?" selected":""}>${p}</option>`).join("")}</select></label>
+        <label>Text size<input id="sz${i}" type="range" min="34" max="56" data-k="size" value="${f.size||42}"></label>
+      </div>
+      <div class="row">
+        <label>Crop across<input id="fx${i}" type="range" min="0" max="1" step="0.01" data-k="fx" value="${f.fx}"></label>
+        <label>Crop up/down<input id="fy${i}" type="range" min="0" max="1" step="0.01" data-k="fy" value="${f.fy}"></label>
+      </div>
+      <label>Zoom<input id="zm${i}" type="range" min="1" max="1.8" step="0.01" data-k="zoom" value="${f.zoom||1}"></label>
+    </div>
+  </article>`).join("");
+}
+function rerenderFrame(i){$("#fr"+i).innerHTML=frameHTML(state.frames[i])}
+function queueSave(){
+  dirty=true; setStatus("Unsaved changes");
+  clearTimeout(timer); timer=setTimeout(save,900);
+}
+async function save(){
+  if(!ref){setStatus("Not saved: sign in to claude.ai to keep edits","err");return}
+  setStatus("Saving…");
+  try{await ref.set({...state,frames:state.frames,updated:Date.now()});dirty=false;setStatus("Saved","saved")}
+  catch(e){setStatus("Not saved: "+(e&&e.message||"you may only have view access"),"err")}
+}
+document.addEventListener("input",e=>{
+  const k=e.target.dataset.k; if(!k)return;
+  const i=+e.target.closest(".card").dataset.i, f=state.frames[i];
+  let v=e.target.value; if(["topY","botY","size","fx","fy","zoom"].includes(k))v=+v;
+  f[k]=v; if(k==="photo")e.target.closest(".card").querySelector(".num span").textContent=`FRAME ${String(i+1).padStart(2,"0")} · ${v}`;
+  rerenderFrame(i); queueSave();
+});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]"); if(!b)return;
+  const i=+b.closest(".card").dataset.i, F=state.frames;
+  if(b.dataset.a==="left"&&i>0)[F[i-1],F[i]]=[F[i],F[i-1]];
+  else if(b.dataset.a==="right"&&i<F.length-1)[F[i+1],F[i]]=[F[i],F[i+1]];
+  else if(b.dataset.a==="del"){if(b.dataset.armed){F.splice(i,1)}else{b.dataset.armed=1;b.textContent="Delete?";return}}
+  else return;
+  render(); queueSave();
+});
+$("#add").addEventListener("click",()=>{
+  state.frames.push({photo:PHOTOS[0],fx:.5,fy:.5,zoom:1,size:42,top:"New frame...",topY:260,bottom:"",botY:1560});
+  render(); queueSave();
+});
+
+(async()=>{
+  const fail=setTimeout(()=>{if(!state)setStatus("Couldn't reach the saved draft. Refresh to try again.","err")},10000);
+  db=await (window.claude?.use?.("db")??null);
+  if(!db){clearTimeout(fail);setStatus("Sign in to claude.ai to see and edit the draft","err");return}
+  let unsub=null;
+  const cur=()=>{const h=location.hash.slice(1);return STORIES.some(s=>s[0]===h)?h:STORIES[0][0]};
+  const tabs=()=>{$("#tabs").innerHTML=STORIES.length>1?STORIES.map(([k,l])=>`<a href="#${k}" aria-current="${k===cur()}">${esc(l)}</a>`).join(""):""};
+  const sub=()=>{
+    if(dirty&&ref)save();
+    if(unsub)unsub(); state=null; dirty=false; tabs();
+    $("#grid").innerHTML='<div class="empty">Loading this story…</div>';
+    ref=db.doc("story/"+cur());
+    unsub=ref.onSnapshot(snap=>{
+      clearTimeout(fail);
+      const d=snap&&snap.exists?JSON.parse(JSON.stringify(snap.data())):null;
+      if(!d||!d.frames){setStatus("Waiting for the first draft");$("#grid").innerHTML='<div class="empty">The first draft of this story is on its way.</div>';return}
+      if(dirty)return;
+      const focused=document.activeElement&&document.activeElement.id;
+      state=d; render(); setStatus("Saved","saved");
+      if(focused&&document.getElementById(focused))document.getElementById(focused).focus();
+    },err=>{clearTimeout(fail);setStatus("Couldn't load the draft: "+(err&&err.message||"error"),"err")});
+  };
+  addEventListener("hashchange",sub); sub();
+})();
+</script>

@@ -1,0 +1,38 @@
+{
+ "name": "negative-text-reel",
+ "label": "Negative-text reel with motion cards",
+ "format": "9:16 talking-head reel (phone or camera A-roll), b-roll cut between lines, negative captions, motion cards behind the speaker",
+ "approved": "2026-10-19, Kyle Ritchie 'My story' reel (jobs/kyle-story)",
+ "style": "negative-text",
+ "canvas": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 24
+ },
+ "captions": {
+  "font": "Inter Bold",
+  "colour": "white 1.35 (float)",
+  "composite": "Difference (CompositeMode 3): letters show the video in negative",
+  "max_words_per_line": 3,
+  "keywords": "plan 'kw': key words big (x1.55), rest of the line smaller, stacked in reading order; heaviest on the hook",
+  "hook": "first 2-3 words in hook_big (zoom 2.4) over the zoom-out",
+  "animation": "original smooth ease-in, 9 frames, letter delay 0.25, blur 0.12 -> 0 by frame 6",
+  "unreadable_lines": "solid red, normal composite (extras 'red')"
+ },
+ "aroll": {
+  "intro_zoom": "zoom-out on the hook",
+  "silences": "pauses >= 0.28s cut to a 0.2s breath (tools/silences.py)",
+  "jump_cuts": "bare joins get the 112% punch toggle"
+ },
+ "broll": {
+  "rule": "no clip used twice (except the hook clip if Eoin asks for two moments)",
+  "sources": "client's old-self / story footage for the past, cinematic angles (not the head-on stage shot) for the present, photos for status / purpose lines",
+  "hook": "straight into the strongest visual within the first ~1s"
+ },
+ "cards": "motion card (screenshot, IG header) fades + lifts in behind the speaker's head on the trigger word, speaker cut out in front (tools/cards.py)",
+ "music": {
+  "rule": "bed trimmed to its kick-in so it hits on frame one, never notdavid",
+  "example": "do i clench my fists_.mp3 start 1.28 gain -13.6"
+ },
+ "deliver": "tools/deliver.py renders the timeline as is, finishes, trims the black tail, deletes older renders"
+}

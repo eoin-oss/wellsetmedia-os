@@ -1,0 +1,204 @@
+Composition {
+	CurrentTime = 0,
+	RenderRange = { 0, 19 },
+	GlobalRange = { 0, 19 },
+	CurrentID = 252,
+	HiQ = true,
+	PlaybackUpdateMode = 0,
+	StereoMode = false,
+	Version = "DaVinci Resolve Studio 21.1.1.0010",
+	SavedOutputs = 0,
+	HeldTools = 0,
+	DisabledTools = 0,
+	LockedTools = 0,
+	AudioOffset = 0,
+	Resumable = true,
+	OutputClips = {
+	},
+	CustomData = { TEMPLATE_ID = "Text+" },
+	Tools = {
+		Background1 = Background {
+			Inputs = {
+				GlobalOut = Input { Value = 19, },
+				Width = Input { Value = 1920, },
+				Height = Input { Value = 1080, },
+				UseFrameFormatSettings = Input { Value = 1, },
+				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+				TopLeftAlpha = Input { Value = 0, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 369.477, 200.127 } },
+		},
+		Dissolve1 = Dissolve {
+			Transitions = {
+				[0] = "DFTRandom"
+			},
+			Inputs = {
+				["DFTWipe.WipeStyle"] = Input {
+					Value = Number {
+						Value = 1
+					},
+				},
+				["DFTWipe.Softness"] = Input {
+					Value = Number {
+						Value = 0.22
+					},
+				},
+				ProcessLayers = Input { Value = FuID { ":All" }, },
+				Operation = Input { Value = FuID { "DFTRandom" }, },
+				Mix = Input {
+					SourceOp = "Dissolve1BackgroundForeground",
+					Source = "Value",
+				},
+				Background = Input {
+					SourceOp = "Background1",
+					Source = "Output",
+				},
+				Foreground = Input {
+					SourceOp = "Transform1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 360.614, 95.322 } },
+		},
+		Template = TextPlus {
+			CtrlWZoom = false,
+			Inputs = {
+				Quality = Input { Value = 8, },
+				ShutterAngle = Input { Value = 326, },
+				GlobalOut = Input { Value = 19, },
+				Width = Input { Value = 1920, },
+				Height = Input { Value = 1080, },
+				UseFrameFormatSettings = Input { Value = 1, },
+				LayoutType = Input { Value = 1, },
+				SelectTransform = Input { Value = 1, },
+				CharacterSpacing = Input { Value = 0.96, },
+				TransformSize = Input { Value = 1, },
+				WordSizeX = Input { Expression = "WordSizeY", },
+				ShadingGradient1 = Input {
+					Value = Gradient {
+						Colors = {
+							[0] = { 0.803, 0.803, 0.803, 1 },
+							[1] = { 1, 0.536, 0.847808000000007, 1 }
+						}
+					},
+				},
+				ShadingMappingAngle1 = Input { Value = 16.7, },
+				ShadingMappingLevel1 = Input { Value = 3, },
+				StyledText = Input { Value = "Magic Tricks", },
+				Font = Input { Value = "Helvetica Neue", },
+				Style = Input { Value = "Bold", },
+				Size = Input { Value = 0.1181, },
+				VerticalJustificationNew = Input { Value = 3, },
+				HorizontalJustificationNew = Input { Value = 3, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 75.0409, 122.756 } },
+			Version = 1
+		},
+		Dissolve1BackgroundForeground = BezierSpline {
+			SplineColor = { Red = 16, Green = 164, Blue = 235 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 0, RH = { 7.38, 0.01 }, Flags = { Linear = true } },
+				[16] = { 1, LH = { 4.93333333333333, 0.991999999999999 } }
+			}
+		},
+		SoftGlow1 = SoftGlow {
+			Inputs = {
+				Filter = Input { Value = FuID { "Fast Gaussian" }, },
+				Threshold = Input { Value = 0.268, },
+				Gain = Input { Value = 0.315, },
+				XGlowSize = Input { Value = 100, },
+				ColorScale = Input { Value = 1, },
+				Input = Input {
+					SourceOp = "Dissolve1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 548.569, 96.715 } },
+		},
+		Path1Displacement = BezierSpline {
+			SplineColor = { Red = 255, Green = 0, Blue = 255 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 0, RH = { 0.625, 0.8875 }, Flags = { Linear = true, LockedY = true } },
+				[15] = { 1, LH = { 4.7, 0.979999999999999 }, Flags = { LockedY = true } }
+			}
+		},
+		Path1 = PolyPath {
+			DrawMode = "InsertAndModify",
+			CtrlWZoom = false,
+			Inputs = {
+				Displacement = Input {
+					SourceOp = "Path1Displacement",
+					Source = "Value",
+				},
+				PolyLine = Input {
+					Value = Polyline {
+						Points = {
+							{ Linear = true, LockY = true, X = 0, Y = -0.136, RX = 0, RY = 0.0453333333333333 },
+							{ Linear = true, LockY = true, X = 0, Y = 0, LX = 0, LY = -0.0453333333333333 }
+						}
+					},
+				}
+			},
+		},
+		Transform1 = Transform {
+			Inputs = {
+				Center = Input {
+					SourceOp = "Path1",
+					Source = "Position",
+				},
+				Input = Input {
+					SourceOp = "Template",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 185.041, 122.756 } },
+		},
+		MediaOut1 = Saver {
+			Inputs = {
+				Index = Input { Value = "0", },
+				Input = Input {
+					SourceOp = "SoftGlow1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 715, 49.5 } },
+		}
+	},
+	Frames = {
+	},
+	Prefs = {
+		Comp = {
+			Interactive = {
+				Proxy = {
+					Scale = 1,
+				},
+			},
+			Views = {
+				RightView = {
+					Viewer = {
+						ScaleMode = 1,
+						Layer = ":Default"
+					}
+				},
+			},
+			Paths = {
+				Map = {
+					["ResolveCaches:"] = "/Users/eoinwells/Desktop/finished video projects/CacheClip/02347228-ff1b-47b7-b1f0-1f4674913b44/572c6bbc-d412-4411-8cc3-2d27b49ecb3a/eb2d6339-7b0f-41ee-b461-4a9ff23b40d2/Fusion",
+				},
+			},
+			FrameFormat = {
+				Rate = 25,
+				GuideRatio = 1.77777777777778,
+				DepthFull = 3,
+				DepthPreview = 3,
+				DepthInteractive = 3,
+			},
+			LastFile = "/Users/sergei2002/Downloads/menyou.jpg",
+			Unsorted = {
+				GlobalEnd = 19
+			},
+		}
+	},
+}

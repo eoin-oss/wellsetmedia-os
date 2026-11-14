@@ -1,0 +1,46 @@
+{
+  "mode": "kyle-seminar",
+  "approved": "2026-10-17/18 by Eoin (Kyle Ritchie Glasgow seminar shorts)",
+  "client": "kyle-ritchie",
+  "length_s": [30, 45],
+  "structure": ["hook", "context", "conflict", "turn", "payoff", "echo"],
+  "cuts": {
+    "only_at": "sentence end or pause >= 0.35s",
+    "tail_min_gap_s": 0.15,
+    "pad": "measured voice RMS energy, not transcript times",
+    "word_timings": "openai-whisper word_timestamps=True (python3, not -I); never whisper-cli -ml 1 (drifts 0.7s)",
+    "audio_join_fade_ms": 8,
+    "verify": "re-transcribe outputs + verify3.py level at every cut"
+  },
+  "intermediate_render": {"codec": "ProRes 422 HQ", "frame_rate": "constant, source fps", "trims": "frame-aligned"},
+  "vertical": {
+    "canvas": [1080, 1920],
+    "video": "16:9 landscape scaled to fit, centred (scaleToFit), video top y=656",
+    "header": {
+      "font": "Helvetica Bold (Helvetica.ttc index 1)",
+      "colour": "white, no box, no outline",
+      "size_px": "78 down to 40, max 4 lines, max width 940",
+      "wrap": "new line per sentence, never a lone last word",
+      "position": "centred, bottom edge 60px above the video (in the top black bar)",
+      "duration": "full reel",
+      "layer": "PNG -> ProRes 4444 alpha .mov on V2 (Fusion title insert returns None via API)"
+    },
+    "export": "H.264 1080x1920"
+  },
+  "text_rules": "never over Kyle's face; no big stacked titles mid-frame; some lighting needs captions bottom only",
+  "music": {
+    "never": ["notdavid","all caps"],
+    "start": "trim to where the track kicks in so it hits frame one",
+    "level": "match by LUFS to the approved reel (07 = -11 LUFS integrated overall)",
+    "fade_out_frames": 20,
+    "known": {"Caleb Arredondo - Echo Sax No.4.mp3": {"start_s": 2.60, "gain_db": -16.3}}
+  },
+  "loudness_out": "about -14 dB RMS voice, both channels (mono stage audio duplicated to L+R)",
+  "caption_cta": "Comment \"IDENTITY\" and I'll send you a free resource breaking it down. (first line of every IG caption; ManyChat not wired yet)",
+  "content_rules": ["never cut a hypnosis moment to a revenue number", "attendee/client disclosures need Kyle sign-off", "no named third parties", "intentional to-camera reels stay whole"],
+  "delivery": {
+    "frame_project": "e7ab2be3-becd-407d-8489-16dc8937887f",
+    "frame_edited_folder": "110e0d60-a19d-4d9a-a128-bdecfa2e01c8",
+    "notion": "More Life Operators teamspace (not reachable via Notion MCP; edit via Chrome UI). Put the Frame link in 'Edited video'"
+  }
+}

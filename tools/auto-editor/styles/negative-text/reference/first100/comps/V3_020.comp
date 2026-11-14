@@ -1,0 +1,232 @@
+Composition {
+	CurrentTime = 0,
+	RenderRange = { 0, 36 },
+	GlobalRange = { 0, 36 },
+	CurrentID = 351,
+	HiQ = true,
+	PlaybackUpdateMode = 0,
+	StereoMode = false,
+	Version = "DaVinci Resolve Studio 21.1.1.0010",
+	SavedOutputs = 0,
+	HeldTools = 0,
+	DisabledTools = 0,
+	LockedTools = 0,
+	AudioOffset = 0,
+	Resumable = true,
+	OutputClips = {
+	},
+	CustomData = { TEMPLATE_ID = "Text+" },
+	Tools = {
+		Template = TextPlus {
+			CtrlWZoom = false,
+			Inputs = {
+				Quality = Input { Value = 8, },
+				ShutterAngle = Input { Value = 326, },
+				GlobalOut = Input { Value = 36, },
+				Width = Input { Value = 1920, },
+				Height = Input { Value = 1080, },
+				UseFrameFormatSettings = Input { Value = 1, },
+				LayoutType = Input { Value = 1, },
+				SelectTransform = Input { Value = 1, },
+				CharacterSpacing = Input { Value = 0.96, },
+				TransformSize = Input { Value = 1, },
+				ShadingGradient1 = Input {
+					Value = Gradient {
+						Colors = {
+							[0] = { 0.803, 0.803, 0.803, 1 },
+							[1] = { 1, 0.536, 0.847808000000007, 1 }
+						}
+					},
+				},
+				ShadingMappingAngle1 = Input { Value = 16.7, },
+				ShadingMappingLevel1 = Input { Value = 3, },
+				StyledText = Input {
+					SourceOp = "Follower1_1",
+					Source = "StyledText",
+				},
+				Font = Input { Value = "Helvetica", },
+				Style = Input { Value = "Bold", },
+				VerticalJustificationNew = Input { Value = 3, },
+				HorizontalJustificationNew = Input { Value = 3, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 195.31, 145.516 } },
+			Version = 1
+		},
+		GaussianBlur1Strength = BezierSpline {
+			SplineColor = { Red = 242, Green = 58, Blue = 8 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 0.3, RH = { 11, 0.3 }, Flags = { Linear = true } },
+				[14] = { 0.181, LH = { 4.46, 0.181 } }
+			}
+		},
+		GaussianBlur1 = ofx.com.blackmagicdesign.resolvefx.GaussianBlur {
+			Inputs = {
+				refreshTrigger = Input {
+					Value = Number {
+						Value = 1
+					},
+				},
+				Source = Input {
+					SourceOp = "Template",
+					Source = "Output",
+				},
+				isSplitHV = Input { Value = 0, },
+				HStrength = Input {
+					SourceOp = "GaussianBlur1Strength",
+					Source = "Value",
+				},
+				VStrength = Input { Value = 0.400000005960464, },
+				relativeHGroup = Input { Value = 0, },
+				relativeHR = Input { Value = 1, },
+				relativeHG = Input { Value = 1, },
+				relativeHB = Input { Value = 1, },
+				relativeHA = Input { Value = 1, },
+				relativeVGroup = Input { Value = 0, },
+				relativeVR = Input { Value = 1, },
+				relativeVG = Input { Value = 1, },
+				relativeVB = Input { Value = 1, },
+				relativeVA = Input { Value = 1, },
+				advancedControlsGroup = Input { Value = 0, },
+				BorderType = Input { Value = FuID { "BORDER_TYPE_REFLECT" }, },
+				isBlurAlpha = Input { Value = 1, },
+				BlendAmount = Input { Value = 0, },
+				Gang = Input { Value = 1, },
+				isLegacyBlurScaling = Input { Value = 1, },
+				blendGroup = Input { Value = 0, },
+				blendIn = Input { Value = 1, },
+				blend = Input { Value = 0, },
+				ignoreContentShape = Input { Value = 0, },
+				legacyIsProcessRGBOnly = Input { Value = 0, },
+				IsNoTemporalFramesReqd = Input { Value = 0, },
+				srcProcessingAlphaMode = Input { Value = 1, },
+				dstProcessingAlphaMode = Input { Value = 1, },
+				resolvefxVersion = Input { Value = "3.2", }
+			},
+			ViewInfo = OperatorInfo { Pos = { 305.31, 145.516 } },
+		},
+		SoftGlow1 = SoftGlow {
+			Inputs = {
+				Filter = Input { Value = FuID { "Fast Gaussian" }, },
+				Threshold = Input { Value = 0.268, },
+				Gain = Input { Value = 0.315, },
+				XGlowSize = Input { Value = 100, },
+				ColorScale = Input { Value = 1, },
+				Input = Input {
+					SourceOp = "GaussianBlur1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 502.169, 147.7 } },
+		},
+		MediaOut1 = Saver {
+			Inputs = {
+				Index = Input { Value = "0", },
+				Input = Input {
+					SourceOp = "SoftGlow1",
+					Source = "Output",
+				}
+			},
+			ViewInfo = OperatorInfo { Pos = { 715, 49.5 } },
+		},
+		Path1_1 = PolyPath {
+			DrawMode = "InsertAndModify",
+			CtrlWZoom = false,
+			Inputs = {
+				Displacement = Input {
+					SourceOp = "Path1_1Displacement",
+					Source = "Value",
+				},
+				PolyLine = Input {
+					Value = Polyline {
+						Points = {
+							{ Linear = true, LockY = true, X = -0.5, Y = -0.666, RX = 0, RY = 0.0553333333333333 },
+							{ Linear = true, LockY = true, X = -0.5, Y = -0.5, LX = 0, LY = -0.0553333333333333 }
+						}
+					},
+				}
+			},
+		},
+		Follower1_1Opacity1 = BezierSpline {
+			SplineColor = { Red = 179, Green = 28, Blue = 244 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 0, RH = { 2.66, 0.012 } },
+				[14] = { 1, LH = { -0.24, 0.98 } }
+			}
+		},
+		Follower1_1 = StyledTextFollower {
+			CtrlWZoom = false,
+			Inputs = {
+				Order = Input { Value = 7, },
+				Delay = Input { Value = 0.46, },
+				Text = Input {
+					Value = StyledText {
+						Value = "being ready is a decision."
+					},
+				},
+				SelectTransform = Input { Value = 1, },
+				WordOffset = Input {
+					SourceOp = "Path1_1",
+					Source = "Position",
+				},
+				TransformRotation = Input { Value = 1, },
+				TransformSize = Input { Value = 1, },
+				Opacity1 = Input {
+					SourceOp = "Follower1_1Opacity1",
+					Source = "Value",
+				},
+				Softness1 = Input { Value = 1, },
+				Softness2 = Input { Value = 1, },
+				Softness3 = Input { Value = 1, },
+				Softness4 = Input { Value = 1, },
+				Softness5 = Input { Value = 1, },
+				Softness6 = Input { Value = 1, },
+				Softness7 = Input { Value = 1, },
+				Softness8 = Input { Value = 1, }
+			},
+		},
+		Path1_1Displacement = BezierSpline {
+			SplineColor = { Red = 255, Green = 0, Blue = 255 },
+			CtrlWZoom = false,
+			KeyFrames = {
+				[0] = { 0, RH = { 0.957894736842105, 0.701473684210526 }, Flags = { LockedY = true } },
+				[14] = { 1, LH = { 4.16315789473684, 0.991157894736841 }, Flags = { LockedY = true } }
+			}
+		}
+	},
+	Frames = {
+	},
+	Prefs = {
+		Comp = {
+			Interactive = {
+				Proxy = {
+					Scale = 1,
+				},
+			},
+			Views = {
+				RightView = {
+					Viewer = {
+						Layer = ":Default"
+					}
+				},
+			},
+			Paths = {
+				Map = {
+					["ResolveCaches:"] = "/Users/eoinwells/Desktop/finished video projects/CacheClip/604b2ea7-b486-4d0b-98e9-6328ac5f6e44/38a6c76b-af06-418a-b283-b8b676d1c447/94e086d5-367a-4775-af9a-d887c88ea04a/Fusion",
+				},
+			},
+			FrameFormat = {
+				Rate = 25,
+				GuideRatio = 1.77777777777778,
+				DepthFull = 3,
+				DepthPreview = 3,
+				DepthInteractive = 3,
+			},
+			LastFile = "/Users/sergei2002/Downloads/menyou.jpg",
+			Unsorted = {
+				GlobalEnd = 36
+			},
+		}
+	},
+}

@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.pyc
+.env*
+# client work + outputs never go in git
+clients/*
+!clients/_template/
+content/stories/*
+content/carousels/*
+content/proof-bank/*
+!**/.gitkeep
+brand/copy-rules-pack
+rules/clients/
+tools/research/data/*
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.drp

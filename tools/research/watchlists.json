@@ -1,0 +1,73 @@
+{
+  "rules": {
+    "min_median_views": 20000,
+    "min_posts_30d": 4,
+    "median_window": 30,
+    "settle_days": 2,
+    "outlier_x": 3,
+    "outlier_max_age_days": 60,
+    "_note": "An account stays on the list only while it's genuinely winning: median of its last 30 settled reels >= min_median_views AND posting >= 4 a month. Fails 2 weeks running = dropped in the report. Outlier = >= 3x that account's own median, posted in the last 60 days.",
+    "_flags": "Logged-in pulls return play_count (plays incl. replays), not logged-out views. Multiples are like-for-like within a week, but treat anything over 50x as suspect (boosted/ad or a counting quirk) and check before using it."
+  },
+  "people": {
+    "eoin": {
+      "niche": "personal-brand content, filmmaking/editing craft, founders building in public",
+      "accounts": [
+        "kallawaymarketing",
+        "jun_yuh",
+        "colinandsamir",
+        "petermckinnon",
+        "hormozi",
+        "thechrisdo",
+        "steven",
+        "thedankoe"
+      ],
+      "status": "handles verified 20 Oct 2026 (profile_id + followers)"
+    },
+    "kyle": {
+      "niche": "mindset, hypnosis, subconscious reprogramming, identity, self-mastery",
+      "accounts": [
+        "dom.the.hypnotist",
+        "drjoedispenza",
+        "the.holistic.psychologist",
+        "jayshetty",
+        "melrobbins",
+        "tonyrobbins",
+        "lewishowes",
+        "chriswillx",
+        "jimkwik",
+        "tristan.vds"
+      ],
+      "status": "handles verified 20 Oct 2026 (profile_id + followers). tristan.vds = dead lead, watch only, never reuse his lines. Kyle's niche is thin on mid-size accounts: add more as found"
+    },
+    "jack": {
+      "niche": "pain, biomechanics, recovery, longevity for high performers",
+      "accounts": [
+        "conor_harris_",
+        "adammeakins",
+        "tom.morrison.training",
+        "rehabscience",
+        "thereadystate",
+        "drjohnrusin",
+        "kneesovertoesguy",
+        "garybrecka",
+        "bryanjohnson_",
+        "peterattiamd"
+      ],
+      "status": "handles verified 20 Oct 2026 (profile_id + followers)"
+    },
+    "joe": {
+      "niche": "business growth, operators, founders scaling",
+      "accounts": [
+        "hormozi",
+        "leilahormozi",
+        "danmartell",
+        "codiesanchez",
+        "imangadzhi",
+        "steven",
+        "sahilbloom"
+      ],
+      "status": "handles verified 20 Oct 2026 (profile_id + followers)"
+    }
+  }
+}

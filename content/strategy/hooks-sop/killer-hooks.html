@@ -1,0 +1,335 @@
+<title>Killer Hooks: The Viewer's Mind</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one vertical spine with 8 numbered stations, matching the board's flow from first frame to the thumb. */
+:root{
+  --bg:#f3f1ec; --paper:#fdf6e8; --ink:#1c1b1a; --muted:#6c6862; --red:#de3f45; --on-red:#fff;
+  --chip:#1c1b1a; --on-chip:#fff; --line:#d9d3c7; --soft:#efe8da;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif; --body:"Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141312; --paper:#1f1d1a; --ink:#f1ede6; --muted:#a59f95; --red:#ec5359; --on-red:#fff;
+  --chip:#f1ede6; --on-chip:#141312; --line:#36322d; --soft:#292622; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141312; --paper:#1f1d1a; --ink:#f1ede6; --muted:#a59f95; --red:#ec5359; --on-red:#fff;
+  --chip:#f1ede6; --on-chip:#141312; --line:#36322d; --soft:#292622; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+.wrap{max-width:1080px;margin:0 auto}
+header.top{display:grid;gap:10px;margin-bottom:28px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:700}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(34px,6vw,58px);line-height:1;margin:0;text-wrap:balance}
+.lede{color:var(--muted);max-width:62ch;margin:0}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 36px}
+nav.toc a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--red);outline:none}
+.flow{position:relative;display:grid;gap:56px}
+.flow::before{content:"";position:absolute;left:21px;top:10px;bottom:10px;width:2px;background:var(--ink);opacity:.85}
+section.st{display:grid;grid-template-columns:44px minmax(0,1fr);gap:18px;scroll-margin-top:20px}
+.num{width:44px;height:44px;border-radius:50%;background:var(--red);color:var(--on-red);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:16px;position:relative;z-index:1}
+.body{display:grid;gap:18px;min-width:0}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3.4vw,34px);line-height:1.1;margin:6px 0 0;text-wrap:balance}
+.sub{color:var(--muted);margin:-8px 0 0}
+h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin:0;font-weight:700}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--paper);border-radius:12px;padding:14px 16px;min-width:0}
+.card b{font-weight:700}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:999px;background:var(--red);color:var(--on-red)}
+.pill.dark{background:var(--chip);color:var(--on-chip)}
+.bar{border-radius:12px;padding:13px 18px;font-weight:700;text-align:center}
+.bar.red{background:var(--red);color:var(--on-red)}
+.bar.dark{background:var(--chip);color:var(--on-chip)}
+.bar.soft{background:var(--soft);color:var(--red)}
+.outline{border:1.5px solid var(--red);background:transparent}
+.tagrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tagrow h4{margin:0;font-size:17px;font-family:var(--display);font-weight:800}
+.small{font-size:13px;color:var(--muted)}
+ul.clean{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+.vs .card{text-align:center}
+.big{font-family:var(--display);font-weight:900;font-size:28px;line-height:1}
+.arrow{font-size:22px;color:var(--muted)}
+.flowrow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}
+.circles{display:grid;place-items:center;padding:8px}
+.outer{width:min(260px,100%);aspect-ratio:1;border-radius:50%;border:1.5px solid var(--red);background:var(--paper);display:grid;grid-template-rows:auto 1fr;justify-items:center;padding-top:26px;text-align:center}
+.inner{width:46%;aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--on-red);display:grid;place-content:center;align-self:center;font-size:12px;line-height:1.3;padding:8px}
+.tbl{overflow-x:auto;border-radius:12px}
+table{border-collapse:separate;border-spacing:0 4px;width:100%;min-width:640px;font-size:13.5px}
+th{background:var(--chip);color:var(--on-chip);font-weight:700;text-align:left;padding:9px 12px}
+th:first-child{border-radius:8px 0 0 8px} th:last-child{border-radius:0 8px 8px 0}
+td{background:var(--paper);padding:9px 12px;vertical-align:top}
+td.s{text-align:center;font-weight:800;font-variant-numeric:tabular-nums;width:72px}
+td.s.hi{background:var(--red);color:var(--on-red)}
+td.s.ok{background:var(--chip);color:var(--on-chip)}
+td:first-child{border-radius:8px 0 0 8px} td:last-child{border-radius:0 8px 8px 0}
+.src{margin-top:56px;font-size:12px;color:var(--muted);text-align:center}
+@media (max-width:640px){
+  section.st{grid-template-columns:1fr} .flow::before{display:none} .num{width:38px;height:38px;font-size:14px}
+  .vs,.flowrow{grid-template-columns:1fr} .arrow{transform:rotate(90deg);justify-self:center}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Hooks SOP · from Josh Agbisit</div>
+    <h1>Killer Hooks: The Viewer's Mind</h1>
+    <p class="lede">From the first frame to the thumb. Eight stations: how they judge you, who you hook, the feeling, the words, the reason to stay, the payoff, the packaging, and the habit you train.</p>
+  </header>
+
+  <nav class="toc" aria-label="Sections">
+    <a href="#snap">01 Snap judgment</a><a href="#dream">02 Dream follower</a><a href="#feeling">03 Feeling</a><a href="#verbal">04 Verbal hook</a>
+    <a href="#amplifier">05 Amplifier</a><a href="#value">06 Value</a><a href="#package">07 Package</a><a href="#pavlov">08 Pavlov's rule</a>
+  </nav>
+
+  <div class="flow">
+
+    <section class="st" id="snap">
+      <div class="num">01</div>
+      <div class="body">
+        <h2>Snap judgment: the frame before the hook</h2>
+        <h3>The "meeting your partner's parents" standard</h3>
+        <div class="grid g4">
+          <div class="card"><b>Clothing</b></div>
+          <div class="card"><b>Camera quality</b></div>
+          <div class="card"><b>Lighting</b></div>
+          <div class="card"><b>Professional editing</b></div>
+        </div>
+        <div class="vs">
+          <div class="card"><div class="small">Same creator, same value</div><div class="big">1K views</div></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card outline"><div class="small">New hook</div><div class="big" style="color:var(--red)">700K views</div></div>
+        </div>
+        <div class="bar dark">The difference was not the value, it was the HOOK.</div>
+        <div class="bar soft">Snap judgment comes before the hook. How you look in the first frame decides whether the hook gets heard.</div>
+      </div>
+    </section>
+
+    <section class="st" id="dream">
+      <div class="num">02</div>
+      <div class="body">
+        <h2>Hook the dream follower, sell the ICP</h2>
+        <p class="sub">Same person, two lenses. Top-of-funnel hooks speak to the dream follower: the larger market you fish in.</p>
+        <div class="grid g2" style="align-items:center">
+          <div class="circles">
+            <div class="outer"><div><b>DREAM FOLLOWER</b><div class="small">Passions, beliefs, story, lifestyle</div></div>
+              <div class="inner"><b>ICP</b>Occupation, revenue, stage</div></div>
+          </div>
+          <div class="grid">
+            <h3>Script as a funnel: broad hook, narrow belief</h3>
+            <div class="bar red"><b>Point of interest:</b> <span style="font-weight:500">something they find attractive. Pulls DESIRE</span></div>
+            <div class="bar dark" style="margin-inline:6%"><b>Belief:</b> <span style="font-weight:500">a lesson that serves them and filters everyone else. Pulls IDENTITY</span></div>
+            <div class="bar" style="background:var(--paper);margin-inline:14%"><b>Who it keeps:</b> <span style="font-weight:500">your buyer</span></div>
+          </div>
+        </div>
+        <div class="tbl"><table>
+          <thead><tr><th>Point of interest</th><th>Belief</th><th>Who it keeps</th></tr></thead>
+          <tbody>
+            <tr><td>Moving into my dream apartment at $100k/month</td><td>Design your life and embody the identity of a high-level business owner</td><td>Ambitious owners</td></tr>
+            <tr><td>The same dream apartment</td><td>"This is your sign to leave your 9-to-5"</td><td>9-to-5ers</td></tr>
+            <tr><td>A $13k Rolex</td><td>"I regret it. My family is still paying off their mortgage"</td><td>Family-first buyers</td></tr>
+            <tr><td>"How many of you work on a Sunday?"</td><td>A belief only owners hold</td><td>Owners. Students and 9-to-5ers leave</td></tr>
+          </tbody>
+        </table></div>
+        <div class="bar dark">Always tie it back to who you are. A point of interest with no link to your identity is unintentional.</div>
+      </div>
+    </section>
+
+    <section class="st" id="feeling">
+      <div class="num">03</div>
+      <div class="body">
+        <h2>Pick the feeling before the words</h2>
+        <p class="sub">People remember a few of 100+ daily videos, by feeling. Brand psychology decides which feeling you pull.</p>
+        <div class="grid g4">
+          <div class="card grid"><div class="tagrow"><h4>Common enemy</h4></div><span class="pill dark">Pulls: RESENTMENT</span>
+            <div>The thing your audience already resents. Tie your wins to beating it.</div>
+            <div class="small"><b>Find it</b></div>
+            <ul class="clean small"><li>What do they complain about in the industry?</li><li>What have they tried that failed?</li><li>What advice are they tired of?</li><li>What do they feel guilty about?</li></ul>
+            <div class="small">Enemies saturate (anti-guru content), so it isn't enough alone.</div></div>
+          <div class="card grid" style="align-content:start"><div class="tagrow"><h4>One core belief</h4></div><span class="pill dark">Pulls: VALIDATION</span>
+            <div>Pick ONE core belief and tie every piece of content to it. Hormozi: "outwork everyone".</div>
+            <div class="small">Give "proof to collect": tie each client win back to the belief.</div></div>
+          <div class="card grid" style="align-content:start"><div class="tagrow"><h4>Consistency</h4></div><span class="pill dark">Pulls: FAMILIARITY</span>
+            <div>Same look, message and behaviour, repeated until it becomes a reflex.</div></div>
+          <div class="card grid" style="align-content:start"><div class="tagrow"><h4>Polarize</h4></div><span class="pill dark">Pulls: STRONG REACTION</span>
+            <div>Aim for strong agreement or strong disagreement. Those who disagree keep watching. The middle gets ignored.</div>
+            <div class="small">Before posting ask: who am I trying to annoy, move, motivate, or relate to?</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="st" id="verbal">
+      <div class="num">04</div>
+      <div class="body">
+        <h2>The verbal hook: six ways to earn the stop</h2>
+        <p class="sub">Each type pulls a different feeling. Pair it with a visual hook.</p>
+        <div class="grid g3">
+          <div class="card grid"><div class="tagrow"><h4>Recency</h4><span class="pill">Urgency</span></div><div>A recent or ongoing event. A current event or trend.</div></div>
+          <div class="card grid"><div class="tagrow"><h4>Relevancy</h4><span class="pill">Recognition</span></div><div>A fear, desire, challenge or personal story that relates a feeling. The audience's fears, desires, challenges or story.</div></div>
+          <div class="card grid"><div class="tagrow"><h4>Celebrity</h4><span class="pill">Borrowed trust</span></div><div>Celebrity jacking. Deliver your point through a known name. Best when you lack authority yourself.</div></div>
+          <div class="card grid"><div class="tagrow"><h4>Proximity</h4><span class="pill">Belonging</span></div><div>How close, by location. Same city or demographic.</div></div>
+          <div class="card grid"><div class="tagrow"><h4>Conflict</h4><span class="pill">Tension</span></div><div>Controversial. Controversy causes strong emotion and replies.</div></div>
+          <div class="card grid"><div class="tagrow"><h4>Unusual</h4><span class="pill">Wonder</span></div><div>Just weird.</div></div>
+        </div>
+        <div class="vs">
+          <div class="bar dark">Visual hook: something happening in frame one</div>
+          <div class="arrow" aria-hidden="true" style="color:var(--red)">+</div>
+          <div class="bar red">Verbal hook: one of the six above</div>
+        </div>
+        <div class="bar soft">Also be concise. Don't drag on your hook.</div>
+      </div>
+    </section>
+
+    <section class="st" id="amplifier">
+      <div class="num">05</div>
+      <div class="body">
+        <h2>The amplifier: a reason to keep watching</h2>
+        <p class="sub">Arguably more important than the hook. It builds curiosity about the value.</p>
+        <div class="grid g2" style="align-items:start">
+          <div class="tbl"><table style="min-width:420px">
+            <thead><tr><th>Amplifier</th><th>Example</th><th>Feeling</th></tr></thead>
+            <tbody>
+              <tr><td><b>Social proof</b></td><td>Usually a bold statement backed up with proof (image or video)</td><td>Trust</td></tr>
+              <tr><td><b>Desire</b></td><td>"And the best way to achieve this is..."</td><td>Hope</td></tr>
+              <tr><td><b>Roadblock</b></td><td>"And it's because you're not using this X strategy"</td><td>Relief</td></tr>
+              <tr><td><b>Controversial</b></td><td>"What I'm about to say will make many people upset."</td><td>Anticipation</td></tr>
+              <tr><td><b>Personal story</b></td><td>"This is something I spent X years learning"</td><td>Empathy</td></tr>
+              <tr><td><b>Information gap</b></td><td>"And it's a technique that only the top 1% of investors know about."</td><td>Exclusivity</td></tr>
+              <tr><td><b>Call out</b></td><td>"And this is where most of you mess up."</td><td>Guilt</td></tr>
+              <tr><td><b>Expectation killing</b></td><td>"And no, it's not X"</td><td>Surprise</td></tr>
+            </tbody>
+          </table></div>
+          <div class="grid">
+            <h3>Joshua's favourites</h3>
+            <div class="bar dark">Social proof<div style="font-weight:500">"I made $10,000 in a single day."</div></div>
+            <div class="bar dark">Killing expectations<div style="font-weight:500">"I made this coach $52k with organic: no ads, no boosting, no sales overhaul."</div></div>
+            <div class="bar dark">References<div style="font-weight:500">Back the claim with visible proof.</div></div>
+          </div>
+        </div>
+        <div class="flowrow">
+          <div class="bar dark">Hook: a reason to stop</div><div class="arrow" aria-hidden="true">→</div>
+          <div class="bar red">Amplifier: a reason to keep watching</div><div class="arrow" aria-hidden="true">→</div>
+          <div class="bar dark">Value: the payoff</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="st" id="value">
+      <div class="num">06</div>
+      <div class="body">
+        <h2>Value that trains them to stop for you</h2>
+        <p class="sub">Would someone pay $5 to watch this and feel satisfied? If not, don't post it.</p>
+        <div class="grid g2" style="align-items:start">
+          <div class="grid">
+            <h3>Five tests</h3>
+            <div class="card"><span class="pill">Relevant</span> Built on the ICP's current problems, desires and situation (from data)</div>
+            <div class="card"><span class="pill">Unique</span> A new angle, framing or uncommon view on a familiar topic, better explained</div>
+            <div class="card"><span class="pill">Clear and actionable</span> A step-by-step they can use within 24 hours. No need to watch another video</div>
+            <div class="card"><span class="pill">Verifiable</span> Backed by proof. They can see themselves doing it</div>
+            <div class="card"><span class="pill">Lasting impression</span> An epiphany or strong emotion. People remember videos by feeling</div>
+          </div>
+          <div class="grid">
+            <h3>Raise perceived value before you give it</h3>
+            <div class="card">Call out a specific undesired state. They don't care until they're problem-aware</div>
+            <div class="card">Lead with a desired state you reached through your mechanism: your results</div>
+            <div class="card">Apply your method to what an industry leader did</div>
+            <h3>Insight vs value</h3>
+            <div class="grid g2">
+              <div class="bar dark">INSIGHT, for Instagram<div style="font-weight:500;font-size:13px">What you did: first we found X, then Y. Builds curiosity.</div></div>
+              <div class="bar red">VALUE, for YouTube<div style="font-weight:500;font-size:13px">Exactly how, step by step. People still buy implementation.</div></div>
+            </div>
+          </div>
+        </div>
+        <h3>Value needn't be educational</h3>
+        <div class="grid g3">
+          <div class="card">Tools</div><div class="card">Resources</div><div class="card">Insights</div>
+          <div class="card">Step-by-steps</div><div class="card">A relatable story with a lesson</div><div class="card">Pure entertainment</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="st" id="package">
+      <div class="num">07</div>
+      <div class="body">
+        <h2>Package it: one idea, 200+ videos</h2>
+        <p class="sub">There are only about 10 to 12 core problems. The rest is volume through formats.</p>
+        <div class="flowrow">
+          <div class="card" style="text-align:center"><b>Steal like an artist</b><div class="small">Find outlier videos, well above that account's average</div></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card" style="text-align:center"><b>Add your twist</b><div class="small">Change one thing: cinematic, a third clone, a new hook</div></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="bar red">Make it your format<div style="font-weight:500;font-size:13px">When one hits, double down and iterate</div></div>
+        </div>
+        <p class="small" style="margin:0">Copying the top format in your niche gives its creator more authority. If others copy yours, the association returns to you.</p>
+        <h3>The multiplier</h3>
+        <div class="grid g3">
+          <div class="grid"><div class="bar red">Rephrase x4: same idea, new words</div><div class="card small">"Getting my dad's live reaction to my income at 19" becomes "telling my mom how much I made at 19"</div></div>
+          <div class="grid"><div class="bar red">Reframe x3: new angle</div><div class="card small">"Top 10 ways to stay rich" becomes "Top 10 ways to stay broke"</div></div>
+          <div class="grid"><div class="bar dark">Reformat: new packaging (most important)</div><div class="card small">Run the same idea through your list of 5 to 10 formats</div></div>
+        </div>
+        <h3>Joshua's format ranking, scored out of 5</h3>
+        <div class="tbl"><table>
+          <thead><tr><th>Format</th><th>Reach</th><th>Selling</th><th>Ease</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>Case-study breakdown</td><td class="s hi">5</td><td class="s hi">5</td><td class="s">3</td><td>Non-negotiable: pin it. Reaches the client's peers</td></tr>
+            <tr><td>Split-screen value</td><td class="s ok">4</td><td class="s ok">4</td><td class="s ok">4</td><td>Strong but oversaturated; needs a good animator</td></tr>
+            <tr><td>Presentation / mastermind / coaching highlights</td><td class="s ok">4</td><td class="s ok">4</td><td class="s ok">4</td><td>Most underrated: most authentic authority</td></tr>
+            <tr><td>Breakdowns</td><td class="s ok">4</td><td class="s ok">4</td><td class="s ok">4</td><td>Borrows proven virality; best for beginners lacking reach</td></tr>
+            <tr><td>Rankings</td><td class="s ok">4</td><td class="s ok">4</td><td class="s ok">4</td><td>Makes viewers problem- and solution-aware while entertaining</td></tr>
+            <tr><td>Versus / two personas</td><td class="s ok">4</td><td class="s ok">4</td><td class="s">2</td><td>Pattern interrupt; brought many ICP leads</td></tr>
+            <tr><td>Voiceover</td><td class="s ok">4</td><td class="s">3</td><td class="s ok">4</td><td>For volume once established</td></tr>
+            <tr><td>Day in the life</td><td class="s ok">4</td><td class="s">3</td><td class="s">3</td><td>Authentic, timeless, shows the lifestyle and wins</td></tr>
+            <tr><td>Talking head + B-roll + graphics</td><td class="s ok">4</td><td class="s">2</td><td class="s">3</td><td>Fully scriptable but oversaturated</td></tr>
+            <tr><td>Lifestyle (B-roll + trending audio)</td><td class="s hi">5</td><td class="s">1</td><td class="s ok">4</td><td>Worst for monetizing: most viral, almost no money</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Choose formats that fit you</h3>
+        <div class="grid g3"><div class="card">Can I produce it at scale?</div><div class="card">Does it fit my brand?</div><div class="card">Can I plug any idea into it?</div></div>
+      </div>
+    </section>
+
+    <section class="st" id="pavlov">
+      <div class="num">08</div>
+      <div class="body">
+        <h2>Pavlov's rule: you're training their thumb</h2>
+        <p class="sub">Every rewarding video trains people to stop for you. Every empty one is a small electric shock that trains them to swipe.</p>
+        <div class="grid g2" style="align-items:start">
+          <div class="grid">
+            <div class="bar dark" style="justify-self:center;padding-inline:40px">Your video</div>
+            <div class="grid g2">
+              <div class="grid"><div class="bar red">Rewarding</div><div class="card" style="text-align:center">They stop for you next time</div></div>
+              <div class="grid"><div class="bar dark">Empty</div><div class="card" style="text-align:center">They swipe you next time</div></div>
+            </div>
+          </div>
+          <div class="grid">
+            <h3>Pre-post check</h3>
+            <div class="card">What emotion does it give me? Excited, scared, anxious from being vulnerable: all good signs</div>
+            <div class="card">Would I pay $5 for it?</div>
+            <div class="card">What does the viewer gain?</div>
+            <div class="card outline"><b>Conviction beats polish.</b> The best videos are often unscripted and raw. Ask about the story and the why.</div>
+            <div class="card outline"><b>AI as drafting help.</b> Feed it five-plus of your own videos, then edit by hand. Never post AI scripts untouched.</div>
+          </div>
+        </div>
+        <h3>When it isn't working: read the symptom</h3>
+        <div class="tbl"><table>
+          <thead><tr><th>Symptom</th><th>Diagnosis</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>Low views, no leads</td><td>Top of funnel / distribution</td><td>Post more, distribute more, TOFU content built for growth</td></tr>
+            <tr><td>High views, few qualified leads</td><td>Weak associations</td><td>TOFU points of interest + beliefs aimed at a qualified dream follower</td></tr>
+            <tr><td>Leads come in, conversations are dry, nobody books</td><td>No connection or trust</td><td>Authentic content. A no-value family video got 48k views and opened easy DM conversations</td></tr>
+            <tr><td>Calls booked, not converting</td><td>Limiting beliefs, objections, outcome not marketed enough</td><td>MOFU/BOFU that breaks beliefs, handles objections, shows proof</td></tr>
+            <tr><td>Everything above working, still not closing</td><td>Sales or setting</td><td>Fix the sales process</td></tr>
+          </tbody>
+        </table></div>
+        <div class="bar dark">Content does everything but sell. It attracts, nurtures, builds resonance and educates.</div>
+      </div>
+    </section>
+
+  </div>
+  <p class="src">Source: Josh Agbisit's Miro board "Killer Hooks: The Viewer's Mind". Reference copy for Eoin.</p>
+</div>

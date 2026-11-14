@@ -1,0 +1,135 @@
+{
+  "name": "kallaway-split",
+  "approved": "2026-10-19, Eoin: 'damn good, amazing'",
+  "reference_job": "jobs/themvsus",
+  "breakdown": "styles/kallaway/BREAKDOWN.md",
+  "frame": {
+    "w": 1080,
+    "h": 1920,
+    "fps": 25
+  },
+  "layout": {
+    "stage": {
+      "y0": 0,
+      "y1": 1000,
+      "title_line1_y": 150,
+      "title_line2_y": 246
+    },
+    "window": {
+      "x0": 36,
+      "x1": 1044,
+      "y0": 1250,
+      "y1": 1817,
+      "corner_radius": 0.06
+    },
+    "window_crop": {
+      "scale": 0.68,
+      "source_y_at_window_top": 250,
+      "face_x_source": 1060,
+      "note": "crop so the window top cuts through his forehead"
+    },
+    "cutout": {
+      "method": "DepthMap Faster + Custom Tool ramp",
+      "lo": 0.13,
+      "hi": 0.17,
+      "breakout_px": 250
+    },
+    "closeup": {
+      "scale": 1.85,
+      "face_y": 540,
+      "every_sec": "8-12",
+      "length_sec": "2-4",
+      "on": "asides, emphatic lines"
+    },
+    "caption_y": {
+      "split": 1072,
+      "closeup": 1250
+    }
+  },
+  "look": {
+    "ground": "near-black (0.012,0.012,0.018) + dim red bloom behind the stage",
+    "grid": {
+      "spacing_px": 120,
+      "line_px": 2,
+      "alpha": 0.075,
+      "drift_px_per_frame": [
+        0.25,
+        0.5
+      ],
+      "edges": "wrap"
+    },
+    "accent": [
+      1.0,
+      0.16,
+      0.2
+    ],
+    "white": [
+      1,
+      1,
+      1
+    ],
+    "glow": {
+      "tool": "SoftGlow",
+      "threshold": 0.25,
+      "gain": 0.9,
+      "size": 10,
+      "note": "on objects, never on titles"
+    }
+  },
+  "type": {
+    "title_line1": {
+      "font": "Helvetica",
+      "style": "Bold",
+      "px": 56,
+      "word_gap": 0.36
+    },
+    "title_line2": {
+      "font": "Didot",
+      "style": "Italic",
+      "px": 92,
+      "colour": "accent",
+      "word_gap": 0.26
+    },
+    "caption": {
+      "font": "Helvetica",
+      "style": "Bold",
+      "px": 62,
+      "case": "upper",
+      "halo": "black blur 9px"
+    },
+    "caption_key_word": {
+      "font": "Didot",
+      "style": "Italic",
+      "px": 76
+    },
+    "text_plus_size": "px / (1450 * 1080/1920)"
+  },
+  "motion": {
+    "rule": "nothing hard-cuts: objects build on the spoken word, then move/regroup/morph into the next idea",
+    "speed_ramp": "quintic in-out (16t^5), 6-8 frames, motion blur quality 6 shutter 220 on moving groups",
+    "pop": "spring damping 11 stiffness 170",
+    "title_words": "rise 18px + fade over 4 frames on their cue; block flicks up 40px and out over 4 frames",
+    "beat_snap": "every cue snapped to nearest beat/hit within 0.2s (beats.py on the bed)",
+    "change_every_sec": "0.5-1.5"
+  },
+  "audio": {
+    "music": "bed sits 15 LU under the voice (background only)",
+    "voice": "A1, music A2, sfx A3/A4",
+    "sfx": {
+      "whoosh": "Fast-woosh / Fast-woosh-2, -19 dB, 0.2s lead",
+      "pop": "Pop-up-woosh -17",
+      "click": "Vintage Click -14",
+      "stamp": "Impact 19 -13 (peak)",
+      "hit": "Short Bass Hit -15 (peak)",
+      "strike": "Glitch 22 -14",
+      "flash": "4E_01 S.EF Flash -16"
+    },
+    "nothing_past_last_frame": true,
+    "sfx_rule": "booms/hits, whooshes and flashes 4 dB under the 19 Oct levels (hard rule, all styles)"
+  },
+  "render": {
+    "review": "720x1280 6 Mb/s",
+    "final": "1080x1920 H.264 40 Mb/s",
+    "range": "MarkIn/MarkOut = edit length"
+  }
+}

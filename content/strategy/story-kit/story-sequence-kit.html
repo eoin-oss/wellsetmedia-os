@@ -1,0 +1,884 @@
+<title>Story Sequence Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..900;1,14..32,400..700&display=swap">
+<style>
+/* Layout: one reading column that descends the grade, story-progress segments as the sticky index,
+   the builder breaks wider with a live 9:16 phone beside the frames. Night palette, dark first. */
+:root{
+  --ground:#0E1113; --ground-2:#12171A; --raise:#182428; --well:#0B0E10;
+  --line:#24343A; --line-soft:#1B272B;
+  --head:#EDE9D6; --text:#C9C6B4; --muted:#8C9A9D; --faint:#4E5C60;
+  --teal:#2E7E96; --teal-hi:#48A0BC; --teal-soft:rgba(46,126,150,.16);
+  --action:#EDE9D6; --action-hi:#F7F3E4; --action-ink:#0E1113;
+  --flag:#C98B7C; --flag-soft:rgba(201,139,124,.12);
+  --frame-bg:#1E2A2F; --frame-bg-2:#121A1E;
+  /* the story look itself: the boxes as they sit on Instagram */
+  --st-box:#080605; --st-ink:#FAFAF7; --st-red:#E4342C; --st-acc:#FAFAF7; --st-acc-ink:#080605;
+  --grain:.05;
+  --sans:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --story:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
+  --r:10px;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --ground:#E9E6DB; --ground-2:#E1DED2; --raise:#F3F0E6; --well:#F7F4EB;
+  --line:#C9C6B8; --line-soft:#D7D4C7;
+  --head:#14181A; --text:#2B3336; --muted:#5E6A6D; --faint:#A7B1B2;
+  --teal:#1D5D70; --teal-hi:#1D5D70; --teal-soft:rgba(29,93,112,.10);
+  --action:#14181A; --action-hi:#232D31; --action-ink:#EDE9D6;
+  --flag:#9A4A3A; --flag-soft:rgba(154,74,58,.09);
+  --frame-bg:#3A4A50; --frame-bg-2:#1E282C;
+  --grain:.035;
+  color-scheme:light}}
+:root[data-theme="light"]{
+  --ground:#E9E6DB; --ground-2:#E1DED2; --raise:#F3F0E6; --well:#F7F4EB;
+  --line:#C9C6B8; --line-soft:#D7D4C7;
+  --head:#14181A; --text:#2B3336; --muted:#5E6A6D; --faint:#A7B1B2;
+  --teal:#1D5D70; --teal-hi:#1D5D70; --teal-soft:rgba(29,93,112,.10);
+  --action:#14181A; --action-hi:#232D31; --action-ink:#EDE9D6;
+  --flag:#9A4A3A; --flag-soft:rgba(154,74,58,.09);
+  --frame-bg:#3A4A50; --frame-bg-2:#1E282C;
+  --grain:.035;
+  color-scheme:light}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--ground);color:var(--text);font:400 16px/1.6 var(--sans);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--ground)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:var(--grain);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1,h2,h3,h4{color:var(--head);margin:0;text-wrap:balance;font-weight:800;letter-spacing:-.025em;line-height:1.05}
+p{margin:0}
+ul,ol{margin:0}
+a{color:var(--teal-hi)}
+em{font-style:italic;color:var(--head)}
+b,strong{color:var(--head);font-weight:650}
+:focus-visible{outline:2px solid var(--teal-hi);outline-offset:2px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.lab{font:650 11px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1120px;margin:0 auto}
+.read{max-width:720px}
+
+/* ---------- sticky strip: story segments as the index ---------- */
+.strip{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--ground) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.strip .in{padding-block:10px;display:flex;flex-direction:column;gap:9px}
+.strip .row{display:flex;align-items:center;gap:12px;justify-content:space-between;min-width:0}
+.mark{display:flex;align-items:center;gap:8px;font:800 14px/1 var(--sans);letter-spacing:-.02em;color:var(--head);white-space:nowrap}
+.mark svg{flex:none}
+.now{font-size:13px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+.now b{font-weight:650}
+.segs{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:4px}
+.segs a{display:block;height:3px;border-radius:2px;background:var(--line);position:relative;overflow:hidden;padding-block:0}
+.segs a i{position:absolute;inset:0 auto 0 0;background:var(--head);width:0}
+.segs a:focus-visible{outline-offset:4px}
+
+/* ---------- hero ---------- */
+.hero{padding-block:56px 48px;display:grid;gap:20px}
+.hero .eyebrow{color:var(--teal-hi)}
+.hero h1{font-size:clamp(42px,9vw,92px);font-weight:900;letter-spacing:-.045em;line-height:.92}
+.hero h1 em{font-weight:700;letter-spacing:-.035em}
+.hero .lede{font-size:clamp(17px,2.2vw,20px);max-width:56ch;color:var(--text)}
+.toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;margin-top:8px;max-width:760px}
+.toc a{background:var(--ground-2);padding:12px 14px;text-decoration:none;color:var(--text);font-size:14.5px;display:flex;gap:10px;align-items:baseline;min-width:0}
+.toc a span{font:700 12px var(--sans);color:var(--teal-hi);font-variant-numeric:tabular-nums}
+.toc a:hover{background:var(--raise);color:var(--head)}
+@media (min-width:760px){.toc{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ---------- sections ---------- */
+.sec{padding-block:64px 8px;border-top:1px solid var(--line-soft);display:flex;flex-direction:column;gap:26px}
+.sec-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:start;max-width:820px}
+.sec-head .num{font:900 clamp(40px,7vw,60px)/.85 var(--sans);letter-spacing:-.05em;color:var(--teal);font-variant-numeric:tabular-nums;grid-row:span 2}
+.sec-head h2{font-size:clamp(28px,5vw,42px);font-weight:900;letter-spacing:-.035em;padding-top:2px}
+.sec-head .why{max-width:62ch;font-size:16.5px;display:flex;flex-direction:column;gap:10px}
+@media (max-width:520px){.sec-head{grid-template-columns:1fr}.sec-head .num{grid-row:auto}}
+.prose{display:flex;flex-direction:column;gap:14px;max-width:64ch;font-size:16.5px}
+.pull{font:800 clamp(22px,3.6vw,30px)/1.15 var(--sans);letter-spacing:-.03em;color:var(--head);max-width:26ch;text-wrap:balance}
+.pull em{font-weight:700}
+
+/* ---------- story boxes (the on-screen look) ---------- */
+.phone{container-type:inline-size;position:relative;aspect-ratio:9/16;max-width:100%;border-radius:14px;overflow:hidden;background:linear-gradient(170deg,var(--frame-bg),var(--frame-bg-2));border:1px solid var(--line)}
+.phone .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone .bars{position:absolute;top:2.2cqw;left:2.6cqw;right:2.6cqw;display:flex;gap:1cqw;z-index:2}
+.phone .bars i{flex:1;height:max(2px,.6cqw);border-radius:2px;background:rgba(250,250,247,.35)}
+.phone .bars i.on{background:rgba(250,250,247,.95)}
+.grp{position:absolute;left:5cqw;right:5cqw;display:flex;flex-direction:column;align-items:center;gap:1.3cqw;z-index:1}
+.grp.top{top:14cqw}
+.grp.mid{top:50%;transform:translateY(-50%)}
+.grp.bot{bottom:20cqw}
+.bx{background:var(--st-box);color:var(--st-ink);font:700 3.9cqw/1.22 var(--story);padding:1.1cqw 2.3cqw;border-radius:1.15cqw;text-align:center;max-width:100%;overflow-wrap:anywhere}
+.bx.hot{background:var(--st-red);color:var(--st-ink)}
+.bx.acc{background:var(--st-acc);color:var(--st-acc-ink)}
+.bx .rd{color:var(--st-red)}
+.bx.hot .rd{color:var(--st-ink);text-decoration:underline}
+.phone .empty{position:absolute;inset:0;display:grid;place-items:center;font-size:max(10px,4cqw);color:rgba(250,250,247,.5);padding:8cqw;text-align:center}
+.phone .tapzone{position:absolute;top:0;bottom:0;width:40%;z-index:3;cursor:pointer;background:transparent;border:0}
+.phone .tapzone.l{left:0}.phone .tapzone.r{right:0}
+
+/* four jobs */
+.jobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (min-width:860px){.jobs{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.job{display:flex;flex-direction:column;gap:10px;min-width:0}
+.job .phone{width:100%}
+.job h3{font-size:17px;font-weight:800;letter-spacing:-.02em;display:flex;gap:8px;align-items:baseline}
+.job h3 span{font:800 13px var(--sans);color:var(--teal-hi);font-variant-numeric:tabular-nums}
+.job p{font-size:14.5px;color:var(--text)}
+
+/* rules list */
+.rules{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;max-width:820px}
+@media (min-width:720px){.rules{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.rules div{background:var(--ground-2);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.rules b{font-size:15px}
+.rules p{font-size:14.5px;color:var(--muted)}
+
+/* types + week */
+.types{display:grid;grid-template-columns:1fr;gap:12px;max-width:900px}
+@media (min-width:720px){.types{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.type{background:var(--ground-2);border:1px solid var(--line-soft);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.type h3{font-size:19px;font-weight:800}
+.type p{font-size:15px}
+.type .ends{font-size:13.5px;color:var(--muted)}
+.type .ends b{color:var(--teal-hi);font-weight:650}
+.week{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;max-width:900px}
+@media (min-width:720px){.week{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.week div{background:var(--raise);padding:18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.week .d{font:900 30px/1 var(--sans);letter-spacing:-.04em;color:var(--head)}
+.week .t{font-weight:650;color:var(--head)}
+.week p{font-size:14.5px}
+.pill{display:inline-block;align-self:flex-start;font:700 10.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:6px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.ask{border-color:var(--head);color:var(--head)}
+.pill.give{border-color:var(--teal);color:var(--teal-hi)}
+
+/* hooks + amplifiers */
+.ref{display:grid;grid-template-columns:1fr;gap:0;max-width:900px;border-top:1px solid var(--line)}
+@media (min-width:720px){.ref{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}}
+.ref div{padding:14px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:30px minmax(0,1fr);gap:2px 10px;min-width:0}
+.ref .n{font:700 12px/1.9 var(--sans);color:var(--teal-hi);font-variant-numeric:tabular-nums;grid-row:span 2}
+.ref b{font-size:15.5px}
+.ref p{font-size:14.5px;color:var(--muted)}
+.ref p q{color:var(--text);quotes:"\201C" "\201D"}
+.ref p small{display:block;color:var(--flag);font-size:13px;margin-top:2px}
+.subh{font-size:21px;font-weight:850;letter-spacing:-.025em;margin-top:6px}
+.value-list{display:flex;flex-wrap:wrap;gap:8px;max-width:820px}
+.value-list span{font-size:14px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);color:var(--head)}
+
+/* worked examples */
+.ex{display:flex;flex-direction:column;gap:14px}
+.ex-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;max-width:900px}
+.ex-head h3{font-size:clamp(22px,3.4vw,28px);font-weight:900;letter-spacing:-.03em}
+.ex-meta{display:flex;flex-wrap:wrap;gap:6px}
+.reel{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.card{flex:0 0 min(64vw,220px);scroll-snap-align:start;display:flex;flex-direction:column;gap:9px;min-width:0}
+.card button{all:unset;cursor:zoom-in;display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);aspect-ratio:9/16;max-width:100%;background:var(--frame-bg)}
+.card button:focus-visible{outline:2px solid var(--teal-hi);outline-offset:2px}
+.card img{display:block;width:100%;height:100%;object-fit:cover}
+.card .role{font:700 11px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--teal-hi)}
+.card p{font-size:14px;line-height:1.5}
+.hint{font-size:13px;color:var(--muted)}
+dialog.lb{border:0;padding:0;background:transparent;max-width:min(92vw,420px);max-height:92vh}
+dialog.lb::backdrop{background:rgba(8,10,12,.86)}
+dialog.lb img{display:block;width:100%;height:auto;max-height:86vh;object-fit:contain;border-radius:12px}
+dialog.lb .x{position:absolute;top:8px;right:8px}
+
+/* ---------- forms ---------- */
+label.l{display:block;font:650 11px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+input[type=text],textarea,select{width:100%;font:400 15px/1.45 var(--sans);color:var(--head);background:var(--well);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{resize:vertical;min-height:96px}
+input::placeholder,textarea::placeholder{color:var(--faint);opacity:1}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--teal-hi);box-shadow:0 0 0 3px var(--teal-soft)}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 14px/1 var(--sans);padding:12px 18px;border-radius:999px;border:1px solid var(--line);color:var(--head);background:transparent;transition:border-color .15s,background .15s}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--action);color:var(--action-ink);border-color:var(--action)}
+.btn.primary:hover{background:var(--action-hi)}
+.btn.small{padding:8px 12px;font-size:13px}
+.btn.icon{padding:0;width:36px;height:36px;font-size:18px}
+.btn:focus-visible{outline:2px solid var(--teal-hi);outline-offset:2px}
+.btn[disabled]{opacity:.4;cursor:default}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* ---------- builder ---------- */
+.banner{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--r);border:1px dashed var(--teal);background:var(--teal-soft);color:var(--head);font-size:14.5px;max-width:1120px}
+.sb{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
+@media (min-width:900px){.sb{grid-template-columns:minmax(0,1fr) 320px}.sbside{order:2;position:sticky;top:92px}}
+.sbside{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sbside .phone{width:min(100%,260px);margin:0 auto}
+@media (min-width:900px){.sbside .phone{width:100%}}
+.pv-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pv-nav span{font-size:13.5px;color:var(--muted);text-align:center;flex:1}
+.pv-nav span b{font-weight:650}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.thumbs button{all:unset;cursor:pointer;flex:0 0 46px;border-radius:6px;outline:1px solid var(--line)}
+.thumbs button .phone{border-radius:6px;border:0}
+.thumbs button[aria-current="true"]{outline:2px solid var(--head)}
+.thumbs button:focus-visible{outline:2px solid var(--teal-hi)}
+.sbmain{display:flex;flex-direction:column;gap:14px;min-width:0}
+.two{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:560px){.two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.key{font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 12px;border:1px solid var(--line-soft);border-radius:8px;background:var(--ground-2)}
+.key code{font:600 13px var(--sans);color:var(--head);background:var(--well);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.frow{position:relative;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line-soft);border-radius:10px;background:var(--ground-2)}
+.frow.cur{border-color:var(--teal)}
+.frow .top{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:center}
+.frow .fn{font:800 15px/1 var(--sans);color:var(--teal-hi);text-align:center;font-variant-numeric:tabular-nums}
+.frow .tools{display:flex;gap:6px}
+.frow textarea{min-height:88px}
+.frow .ph{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.frow .ph label{cursor:pointer;color:var(--teal-hi);font-weight:600}
+.frow .ph label:hover{text-decoration:underline}
+.frow .ph input{position:absolute;width:1px;height:1px;opacity:0}
+.frow .ph input:focus-visible+label{outline:2px solid var(--teal-hi);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:480px){.frow .top{grid-template-columns:26px minmax(0,1fr) auto}.frow .top .pos{grid-column:2/4;grid-row:2}}
+.checks{display:flex;flex-direction:column;gap:6px;list-style:none;padding:0}
+.checks li{font-size:14px;line-height:1.4;padding:8px 12px 8px 30px;border-radius:7px;position:relative;background:var(--flag-soft);color:var(--flag);border:1px solid color-mix(in srgb,var(--flag) 35%,transparent)}
+.checks li::before{content:"";position:absolute;left:12px;top:13px;width:8px;height:8px;border-radius:50%;background:currentColor}
+.checks li.ok{background:var(--teal-soft);color:var(--head);border-color:color-mix(in srgb,var(--teal) 40%,transparent)}
+.checks li.ok::before{background:var(--teal-hi)}
+.score{display:flex;align-items:baseline;gap:8px}
+.score b{font:900 26px/1 var(--sans);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.score span{font-size:13.5px;color:var(--muted)}
+.inline-confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--head)}
+
+/* planner */
+.plan{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:900px){.plan{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pcard{background:var(--ground-2);border:1px solid var(--line-soft);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pcard .hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pcard .hd h3{font-size:18px;font-weight:850}
+.pcard .hd select{width:auto;min-width:96px}
+
+/* checklist */
+.cl{list-style:none;padding:0;display:flex;flex-direction:column;gap:0;max-width:820px;border-top:1px solid var(--line)}
+.cl li{border-bottom:1px solid var(--line-soft)}
+.cl label{display:grid;grid-template-columns:28px 24px minmax(0,1fr);gap:10px;align-items:start;padding:14px 0;cursor:pointer}
+.cl .n{font:700 12px/24px var(--sans);color:var(--teal-hi);font-variant-numeric:tabular-nums}
+.cl input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--teal)}
+.cl span b{display:block;font-size:15.5px}
+.cl span small{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.cl li:has(input:checked) b{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+
+/* keep */
+.keep{display:grid;grid-template-columns:1fr;gap:12px;max-width:900px}
+@media (min-width:760px){.keep{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.panel{background:var(--ground-2);border:1px solid var(--line-soft);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-size:17px;font-weight:800}
+.panel p{font-size:14.5px}
+.status{font-size:13.5px;color:var(--teal-hi);min-height:1.4em}
+.status.err{color:var(--flag)}
+.file-in{position:absolute;width:1px;height:1px;opacity:0}
+.close{padding-block:72px 40px;border-top:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px;max-width:720px}
+.close p{font-size:clamp(18px,2.4vw,21px);color:var(--head);font-weight:600;letter-spacing:-.01em;max-width:44ch}
+.close small{color:var(--muted);font-size:13.5px}
+.sign{display:flex;align-items:center;gap:8px;margin-top:10px;font:800 14px/1 var(--sans);color:var(--head)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="lens" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 7.8 4.5" fill="none" stroke="var(--teal-hi)" stroke-width="2.4" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<header class="strip">
+  <div class="in wrap gut">
+    <div class="row">
+      <span class="mark"><svg width="18" height="18" aria-hidden="true"><use href="#lens"/></svg>WellSetMedia</span>
+      <span class="now" id="now"><b>Story Sequence Kit</b></span>
+    </div>
+    <nav class="segs" id="segs" aria-label="Sections">
+      <a href="#why" aria-label="Why they tap through"><i></i></a>
+      <a href="#frames" aria-label="The four jobs"><i></i></a>
+      <a href="#types" aria-label="Types and the week"><i></i></a>
+      <a href="#hooks" aria-label="Hooks and amplifiers"><i></i></a>
+      <a href="#examples" aria-label="Worked examples"><i></i></a>
+      <a href="#build" aria-label="Build a story"><i></i></a>
+      <a href="#week" aria-label="Plan your week"><i></i></a>
+      <a href="#check" aria-label="Before you post"><i></i></a>
+      <a href="#keep" aria-label="Keep your work"><i></i></a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap gut">
+  <section class="hero">
+    <p class="lab eyebrow">The free sauce · Story Sequence Kit</p>
+    <h1>Stories people <em>reply</em> to.</h1>
+    <p class="lede">This is my story sequence system. The exact one behind the story you just replied to. Four jobs in the right order, three stories a week, one ask. Read it once, then build your own at the bottom of the page.</p>
+    <nav class="toc" aria-label="What's in the kit">
+      <a href="#why"><span>01</span>Why they tap through</a>
+      <a href="#frames"><span>02</span>The four jobs</a>
+      <a href="#types"><span>03</span>Types and the week</a>
+      <a href="#hooks"><span>04</span>Hooks and amplifiers</a>
+      <a href="#examples"><span>05</span>Two real stories, frame by frame</a>
+      <a href="#build"><span>06</span>Build yours</a>
+      <a href="#week"><span>07</span>Plan your week</a>
+      <a href="#check"><span>08</span>Before you post</a>
+      <a href="#keep"><span>09</span>Keep your work</a>
+    </nav>
+  </section>
+
+  <!-- 01 -->
+  <section class="sec" id="why" data-title="Why they tap through">
+    <div class="sec-head"><div class="num">01</div><h2>Why they tap through</h2>
+      <div class="why"><p>People don't skip your stories because they're bad. They skip because nothing tells them to stay.</p></div></div>
+    <div class="prose">
+      <p>Look at most founder stories. Frame one is about you: your news, your launch, your week. Nothing on frame two gives them a reason to see frame three. And every story ends on the same "DM me", so people learn to tap past it.</p>
+      <p>Stories are the one place you reach the people who already follow you, every day. They're warm. They're watching. They just aren't being given a reason to reply.</p>
+      <p class="pull">The fix isn't posting more. It's <em>the order</em>.</p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="frames" data-title="The four jobs">
+    <div class="sec-head"><div class="num">02</div><h2>The four jobs</h2>
+      <div class="why"><p>Every sequence does four jobs, in this order. A job can take more than one frame. My Monday story below is eight frames. The order never changes.</p></div></div>
+    <div class="jobs" id="jobs"></div>
+    <h3 class="subh">The rules that keep it working</h3>
+    <div class="rules">
+      <div><b>One thought per box</b><p>One to five boxes a frame. If a box needs two lines on a phone, it's two thoughts.</p></div>
+      <div><b>End on "..."</b><p>Every frame but the last ends on "..." so the thought isn't finished. That's what makes them tap forward.</p></div>
+      <div><b>Red for the pain</b><p>The word that stings goes red. The hook line can sit in a full red box. One bright box per frame, max.</p></div>
+      <div><b>Real photos only</b><p>Your own snaps, never stock. Text in the empty space, the sky or the floor, never across a face.</p></div>
+      <div><b>Stay in the safe area</b><p>Keep text away from the top and bottom of the screen, where your name and the reply bar sit.</p></div>
+      <div><b>Proof is real or it's out</b><p>Every number, result and screenshot is real, dated and OK to show. Keep them in one place so you never have to invent one.</p></div>
+      <div><b>Scarcity only if it's true</b><p>"Two spots left" when there are ten is how people stop believing you.</p></div>
+      <div><b>Fight ideas, not people</b><p>Be controversial about an idea. Never knock another creator to make your point.</p></div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="types" data-title="Types and the week">
+    <div class="sec-head"><div class="num">03</div><h2>Four types, three a week</h2>
+      <div class="why"><p>Every sequence is one type. Two can mix. Rotate them so your stories never feel the same twice.</p></div></div>
+    <div class="types">
+      <div class="type"><h3>Documentation</h3><p>Your week. Loose, few boxes, real moments. This is how people get to know you, and it's the one that needs the least work.</p><p class="ends"><b>Ends on:</b> nothing. No ask.</p></div>
+      <div class="type"><h3>Wins</h3><p>Results. A client's message, a number that moved, a before and after. Their words beat yours every time.</p><p class="ends"><b>Ends on:</b> your offer keyword, if this is your one ask of the week.</p></div>
+      <div class="type"><h3>Value</h3><p>A process, a breakdown, a step by step, or a free thing you actually use. They should feel they got something even if they never reply.</p><p class="ends"><b>Ends on:</b> a keyword to get the free thing.</p></div>
+      <div class="type"><h3>Limiting belief</h3><p>Open on the objection in their words. Agree with it. Then show the reality, the proof, and the way through.</p><p class="ends"><b>Ends on:</b> your offer keyword.</p></div>
+    </div>
+    <h3 class="subh">The week</h3>
+    <div class="week">
+      <div><span class="d">Mon</span><span class="t">Documentation</span><p>Your week, your work, your life. Builds the person.</p><span class="pill">No ask</span></div>
+      <div><span class="d">Wed</span><span class="t">Value</span><p>The free drop. Something real you use, given away.</p><span class="pill give">Keyword to get it</span></div>
+      <div><span class="d">Fri</span><span class="t">Wins or limiting belief</span><p>Proof, or the objection taken apart.</p><span class="pill ask">Offer keyword</span></div>
+    </div>
+    <div class="prose">
+      <p><b>Only one story a week asks for the sale.</b> The Wednesday keyword hands out something free, so it reads as a gift, not a pitch. Ask on every story and people stop reading.</p>
+      <p><b>Use a keyword, not "DM me".</b> "Reply STORY" is one word, easy to type, and tells you exactly which story worked. Pick a different word for each ask so the same line never shows up two days running.</p>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="hooks" data-title="Hooks and amplifiers">
+    <div class="sec-head"><div class="num">04</div><h2>Hooks and amplifiers</h2>
+      <div class="why"><p>The hook stops them on frame one. The amplifier is the reason to keep tapping. It isn't a second hook. It's the bit that makes them think "ok, this is real". Pick one of each.</p></div></div>
+    <h3 class="subh">Six hooks for frame one</h3>
+    <div class="ref" id="hooklist"></div>
+    <h3 class="subh">Fourteen amplifiers for frame two or three</h3>
+    <p class="hint" style="max-width:64ch">Never later than frame three. By frame five most people are gone.</p>
+    <div class="ref" id="amplist"></div>
+    <h3 class="subh">What counts as value</h3>
+    <div class="value-list"><span>A tool</span><span>A resource</span><span>An insight</span><span>A step by step</span><span>A relatable story with a lesson</span><span>Entertainment</span></div>
+    <p class="prose">Whatever it is, it has to make them feel something. Information alone gets a nod. A feeling gets a reply.</p>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="examples" data-title="Worked examples">
+    <div class="sec-head"><div class="num">05</div><h2>Two real stories, frame by frame</h2>
+      <div class="why"><p>Both went out the week this kit did. Swipe through each one. Tap a frame to see it bigger.</p></div></div>
+    <div class="ex" id="ex-mon"></div>
+    <div class="ex" id="ex-fri"></div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec" id="build" data-title="Build yours">
+    <div class="sec-head"><div class="num">06</div><h2>Build yours</h2>
+      <div class="why"><p>Pick a type, write your frames, watch it on the phone. The checks tell you when the order is off. Add your own photos to see it for real.</p></div></div>
+    <div class="banner" id="exbanner" hidden><span>This is an example: my Friday story. Start blank and write yours.</span><span class="btns"><button class="btn small primary" type="button" id="b-blank">Start blank</button></span></div>
+    <div class="sb">
+      <aside class="sbside" aria-label="Preview">
+        <div class="phone" id="pv"></div>
+        <div class="pv-nav"><button class="btn icon" type="button" id="pv-prev" aria-label="Previous frame">&lsaquo;</button><span id="pv-lab">Frame 1</span><button class="btn icon" type="button" id="pv-next" aria-label="Next frame">&rsaquo;</button></div>
+        <div class="thumbs" id="thumbs" aria-label="All frames"></div>
+        <div class="score"><b id="score">0/0</b><span>checks passing</span></div>
+        <ul class="checks" id="checks"></ul>
+      </aside>
+      <div class="sbmain">
+        <div class="two">
+          <div><label class="l" for="b-type">Type</label><select id="b-type"><option>Documentation</option><option>Wins</option><option>Value</option><option>Limiting belief</option></select></div>
+          <div><label class="l" for="b-kw">Keyword they reply with</label><input type="text" id="b-kw" placeholder="e.g. READY" autocomplete="off"></div>
+        </div>
+        <div class="key"><span><code>!</code> at the start of a line = red box, for the hook</span><span><code>*</code> = white box, one per frame</span><span><code>[word]</code> = red word</span><span>Empty line = rest goes to the bottom</span></div>
+        <div id="frows" style="display:flex;flex-direction:column;gap:10px"></div>
+        <div class="btns"><button class="btn small" type="button" id="b-add">Add a frame</button><span class="hint">Photos stay on this screen only. Your words are saved in this browser.</span></div>
+        <div class="btns"><button class="btn small" type="button" id="b-clear">Clear the builder</button>
+          <span class="inline-confirm" id="b-clear-confirm" hidden>Clear every frame? <button class="btn small primary" type="button" id="b-clear-yes">Clear</button><button class="btn small" type="button" id="b-clear-no">Keep</button></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec" id="week" data-title="Plan your week">
+    <div class="sec-head"><div class="num">07</div><h2>Plan your week</h2>
+      <div class="why"><p>Three stories. Different types, one sale ask, a different keyword each time. Plan them on the same day you plan your posts and the week runs itself.</p></div></div>
+    <div class="banner" id="plbanner" hidden><span>This is an example week. Clear it and plan yours.</span><span class="btns"><button class="btn small primary" type="button" id="p-blank">Clear the example</button></span></div>
+    <div class="plan" id="plan"></div>
+    <ul class="checks" id="pchecks" style="max-width:900px"></ul>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec" id="check" data-title="Before you post">
+    <div class="sec-head"><div class="num">08</div><h2>Before you post</h2>
+      <div class="why"><p>Ten checks. Run them every time, on your phone, before it goes up.</p></div></div>
+    <ol class="cl" id="cl"></ol>
+    <div class="btns"><button class="btn small" type="button" id="cl-reset">Untick all for the next one</button></div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec" id="keep" data-title="Keep your work">
+    <div class="sec-head"><div class="num">09</div><h2>Keep your work</h2>
+      <div class="why"><p>This page saves in this browser only. Download your stories to keep them, or open them on another device.</p></div></div>
+    <div class="keep">
+      <div class="panel"><h3>Download my stories</h3>
+        <p>Your story, your week and your checklist in one text file you can read anywhere. It loads back in here too.</p>
+        <div class="btns"><button class="btn primary" type="button" id="dl">Download my stories</button><button class="btn small" type="button" id="cp">Copy as text</button></div>
+        <p class="status" id="dl-status" role="status"></p>
+        <div id="fb" hidden><label class="l" for="fb-text">Copy this and keep it in a note. Paste it into the box on the right to load it back.</label><textarea id="fb-text" readonly style="min-height:140px"></textarea></div>
+      </div>
+      <div class="panel"><h3>Load it back</h3>
+        <p>Pick the file you downloaded from here, or paste its text. Loading replaces what's on this page.</p>
+        <div class="btns"><input class="file-in" type="file" id="imp-file" accept=".txt,.json,text/plain,application/json"><label class="btn small" for="imp-file">Pick a file</label></div>
+        <label class="l" for="imp-paste">Or paste it</label><textarea id="imp-paste" placeholder="Paste the whole file here"></textarea>
+        <div class="btns"><button class="btn small" type="button" id="imp-go">Load it</button></div>
+        <p class="status" id="imp-status" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="close">
+    <p>If you'd rather have all of this done for you, the stories, the reels and the system behind them, that's what WellSetMedia does. Reply to the message this came in and we'll talk.</p>
+    <small>Free to use for your own stories. Built by Eoin Wells.</small>
+    <span class="sign"><svg width="18" height="18" aria-hidden="true"><use href="#lens"/></svg>WellSetMedia</span>
+  </footer>
+</main>
+
+<dialog class="lb" id="lb"><img id="lb-img" alt=""><button class="btn icon x primary" type="button" id="lb-x" aria-label="Close">&times;</button></dialog>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+/* ---------- story box rendering ---------- */
+function inline(t){ // [word] or [[word]] -> red word
+  return esc(t).replace(/\[\[([^\]]+)\]\]|\[([^\]]+)\]/g,function(_,a,b){return '<span class="rd">'+(a||b)+'</span>'});
+}
+function parseFrame(text){
+  var parts=String(text||"").replace(/\r/g,"").split(/\n\s*\n/);
+  var top=parts[0]||"", bottom=parts.slice(1).join("\n");
+  function lines(s){return s.split("\n").map(function(x){return x.trim()}).filter(Boolean).map(function(l){
+    var kind=""; if(/^!\s*/.test(l)&&l.charAt(0)==="!"){kind="hot";l=l.replace(/^!\s*/,"")} else if(l.charAt(0)==="*"){kind="acc";l=l.replace(/^\*\s*/,"")}
+    return {kind:kind,text:l};
+  })}
+  return {top:lines(top),bottom:lines(bottom)};
+}
+function boxes(ls){return ls.map(function(l){return '<span class="bx'+(l.kind?" "+l.kind:"")+'">'+inline(l.text)+'</span>'}).join("")}
+function phoneHTML(f,idx,total,opts){
+  opts=opts||{};
+  var p=parseFrame(f.text), h="";
+  if(f.photo) h+='<img class="bg" src="'+f.photo+'" alt="">';
+  if(opts.bars){h+='<div class="bars">'; for(var i=0;i<total;i++) h+='<i class="'+(i<=idx?"on":"")+'"></i>'; h+='</div>'}
+  var split=p.bottom.length>0;
+  if(p.top.length) h+='<div class="grp '+(split?"top":(f.pos||"top"))+'">'+boxes(p.top)+'</div>';
+  if(split) h+='<div class="grp bot">'+boxes(p.bottom)+'</div>';
+  if(!p.top.length&&!p.bottom.length) h+='<div class="empty">'+(opts.emptyText||"Empty frame")+'</div>';
+  return h;
+}
+
+/* ---------- static content ---------- */
+var JOBS=[
+ ["Stop them","Say what they already feel, in their words. Not your news. Their problem.",{text:"! People watch your stories and never reply\nYou post. They tap through. [Silence]...",pos:"top"}],
+ ["Keep them tapping","By frame two or three, give them a reason to see the next frame: proof, or kill what they expect.",{text:"And no, the fix isn't [posting more]\n* It's 4 frames in the right order...",pos:"top"}],
+ ["Pay it off","A lesson, a step, or a story they see themselves in. This is why they kept tapping.",{text:"A lesson, a step, or a story\nThey see [themselves] in it...",pos:"mid"}],
+ ["Ask once","One keyword, on the last frame. Or no ask at all. Never on every story.",{text:"You give me a weekend\n\n! Reply WEEKEND and I'll show you",pos:"top"}]
+];
+$("#jobs").innerHTML=JOBS.map(function(j,i){
+  return '<div class="job"><div class="phone" aria-hidden="true">'+phoneHTML(j[2],i,4,{bars:true})+'</div><h3><span>'+(i+1)+'</span>'+esc(j[0])+'</h3><p>'+esc(j[1])+'</p></div>';
+}).join("");
+
+var HOOKS=[
+ ["Recency","Something that just happened.","I filmed a month of content on Saturday."],
+ ["Relevancy","Their fear or their want, in the words they'd use.","People watch your stories and never reply."],
+ ["Celebrity jacking","Borrow a moment from someone everyone knows.","What [a founder everyone knows] does on camera that you don't.","Well-known public figures only. Never someone nobody's heard of."],
+ ["Proximity","Same city, same stage, same situation.","If you run a business on your own and post on your own, this one's for you."],
+ ["Conflict","Pick a fight with an idea.","Posting every day is the reason nobody replies."],
+ ["Weird","Something that doesn't fit, so they have to look.","My best month of content started with a photo of my dinner."]
+];
+var AMPS=[
+ ["Social proof","Others already trust you with this.","I build these for founders every week."],
+ ["Desire","Show them the version of their life they want.","Picture a month of content from one weekend."],
+ ["Roadblock","Name the thing in their way.","Your stories aren't the problem. The order is."],
+ ["Controversial","Go against a popular idea.","Posting more won't fix this.","Against an idea, never against a person or another creator."],
+ ["Personal story","It happened to you first.","Two years ago I posted every day to nobody."],
+ ["Information gap","Open a loop they need closed.","Frame four is where everyone loses them."],
+ ["Call out","Name exactly who this is for.","If you got zero replies on your last ten stories, this is you."],
+ ["Negative assumption","Rule out what they think the answer is.","And no, it's not posting more, a better camera or a new app."],
+ ["Risk reversal","Take the risk off them.","Try it on one story. If nobody replies, you've lost ten minutes."],
+ ["Celebrity jacking","Tie your point to someone well known.","The same thing [a name everyone knows] does in every interview.","Well-known public figures only."],
+ ["Reference","Back the claim with something real.","Here's the screenshot.","Real sources only."],
+ ["Visual","Show it instead of saying it.","The before and after, side by side."],
+ ["Scarcity","There's a real limit.","I'm taking two founders this month.","Only if it's true."],
+ ["Killing expectations","Say what you didn't do.","I didn't run ads. I didn't post daily. I changed the order."]
+];
+function refHTML(list){return list.map(function(x,i){
+  return '<div><span class="n">'+(i<9?"0":"")+(i+1)+'</span><b>'+esc(x[0])+'</b><p>'+esc(x[1])+' <q>'+esc(x[2])+'</q>'+(x[3]?'<small>'+esc(x[3])+'</small>':"")+'</p></div>';
+}).join("")}
+$("#hooklist").innerHTML=refHTML(HOOKS);
+$("#amplist").innerHTML=refHTML(AMPS);
+
+var EX={
+ mon:{title:"Monday: why nobody replies",meta:["Value","Hook: relevancy","Amplifier: negative assumption + proof","No ask"],frames:[
+  ["Hook","Their exact problem, in a red box. \"The order is...\" opens a loop they need closed.","People watch your stories and never reply. You post. They tap through. Silence. The stories aren't the problem. The order is..."],
+  ["Amplifier","On frame two. Proof I do this every week, then rule out the obvious answer. The white box carries the promise.","I build these for founders every week. And no, the fix isn't posting more. It's 4 frames in the right order..."],
+  ["Value","One step per frame. The red word is the pain.","1. Stop them on frame one. Say what they already feel. Not your news. Their problem..."],
+  ["Value","Step two names the rule and the cost of breaking it.","2. Give them a reason to keep tapping. Proof, or kill what they expect. By frame two. Frame five is too late..."],
+  ["Value","Short. They should see themselves in it.","3. Pay it off. A lesson, a step, or a story. They see themselves in it..."],
+  ["Value","The rule that sets up the whole week.","4. Ask once. Ask on every story and people stop reading. 3 stories a week. Only one asks..."],
+  ["Proof","Points back at itself. The story is the proof the method works.","This story is built the exact same way. Go back and look at frame two..."],
+  ["No ask","Monday doesn't ask. It teases Wednesday instead, so they come back.","Wednesday I'm giving the whole system away. Keep an eye on my stories"]
+ ]},
+ fri:{title:"Friday: I don't have time for content",meta:["Limiting belief","Hook: relevancy","Amplifier: killing expectations","Ask: WEEKEND"],frames:[
+  ["Hook","The objection in their own words. Then agree with it. Nobody expects that.","I don't have time for content. Every founder I speak to says it. And they're right..."],
+  ["Amplifier","Kill what they expect me to say. Text sits on the table, clear of faces.","I'd never ask a founder to film every day. Filming daily is a second job. Scripts. Setups. Editing. Posting..."],
+  ["Value","The reality: what I do instead. Concrete, not clever.","So I take one weekend. Every block of the day planned around a piece of content. The dinner. The routine. The sit-down. The real work..."],
+  ["Value","The payoff in one white box.","3 days living life normally. An entire month of content planned from it..."],
+  ["Proof","How it holds up. Text drops to the bottom so it's never across a face.","Every clip transcribed. Every moment tagged. Every post signed off before it goes out..."],
+  ["Ask","The one ask of the week. Red box, one keyword, no \"...\" because it's the end.","You give me a weekend. You approve the videos. You never think about content again. Reply WEEKEND and I'll show you what yours looks like"]
+ ]}
+};
+function exHTML(key){
+  var e=EX[key];
+  var h='<div class="ex-head"><h3>'+esc(e.title)+'</h3><div class="ex-meta">'+e.meta.map(function(m,i){return '<span class="pill'+(i===e.meta.length-1&&/Ask/.test(m)?" ask":"")+'">'+esc(m)+'</span>'}).join("")+'</div></div><div class="reel">';
+  e.frames.forEach(function(f,i){
+    var src="frames/"+key+"-0"+(i+1)+".jpg";
+    h+='<div class="card"><button type="button" data-lb="'+src+'" data-alt="'+esc(f[2])+'" aria-label="Frame '+(i+1)+' bigger"><img src="'+src+'" alt="Frame '+(i+1)+': '+esc(f[2])+'" loading="lazy" width="540" height="960"></button>'+
+       '<span class="role">'+(i+1)+' · '+esc(f[0])+'</span><p>'+esc(f[1])+'</p></div>';
+  });
+  return h+'</div><p class="hint">Swipe for every frame.</p>';
+}
+$("#ex-mon").innerHTML=exHTML("mon");
+$("#ex-fri").innerHTML=exHTML("fri");
+var lb=$("#lb");
+document.addEventListener("click",function(e){
+  var b=e.target.closest&&e.target.closest("[data-lb]"); if(!b) return;
+  $("#lb-img").src=b.getAttribute("data-lb"); $("#lb-img").alt=b.getAttribute("data-alt");
+  try{lb.showModal()}catch(err){lb.setAttribute("open","")}
+});
+$("#lb-x").addEventListener("click",function(){try{lb.close()}catch(e){lb.removeAttribute("open")}});
+lb.addEventListener("click",function(e){if(e.target===lb){try{lb.close()}catch(err){lb.removeAttribute("open")}}});
+
+var CHECKS=[
+ ["Frame one says what they already feel","In their words. If it's about your news, rewrite it."],
+ ["A reason to keep tapping by frame two or three","Proof, a ruled-out answer, an open loop. Not later."],
+ ["One thought per box, five boxes max","Read each box out loud. If you take a breath in the middle, split it."],
+ ["Every frame but the last ends on \"...\"",""],
+ ["The value makes them feel something","A lesson, a step, or a story they see themselves in."],
+ ["One ask, on the last frame, with one keyword","Or no ask at all. Never two."],
+ ["Not the same ask as your last story","Different keyword, or a story that doesn't ask."],
+ ["Every number and result is real and OK to show","If you can't point to where it came from, it's out."],
+ ["Real photos, text in the empty space","Never across a face. Clear of the top and bottom of the screen."],
+ ["Tap through it on your phone, fast, sound off","If you'd tap past a frame, so will they. Fix that frame."]
+];
+
+/* ---------- state ---------- */
+var KEY="wsm-story-kit", APP="wellsetmedia-story-kit";
+var DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], TYPES=["Documentation","Wins","Value","Limiting belief"], ROLES=["Hook","Amplifier","Value","Proof","Story","Ask"];
+var ENDS=["No ask","Free thing on a keyword","Offer on a keyword"];
+function exampleBuilder(){return {type:"Limiting belief",kw:"WEEKEND",example:true,frames:[
+ {role:"Hook",pos:"top",text:"! I don't have time for content\nEvery founder I speak to says it\nAnd they're [right]..."},
+ {role:"Amplifier",pos:"mid",text:"* I'd never ask a founder to film every day\nFilming daily is a [second job]\nScripts. Setups. Editing. Posting..."},
+ {role:"Value",pos:"top",text:"So I take one weekend\nEvery block of the day planned around a piece of content\nThe dinner. The routine. The sit-down. The [real work]..."},
+ {role:"Value",pos:"top",text:"3 days living life normally\n* An entire month of content planned from it..."},
+ {role:"Proof",pos:"bot",text:"Every clip transcribed. Every moment tagged\nEvery post signed off [before] it goes out..."},
+ {role:"Ask",pos:"top",text:"You give me a weekend\nYou approve the videos\nYou never think about content again\n\n! Reply WEEKEND and I'll show you what yours looks like"}
+]}}
+function blankBuilder(){return {type:"Value",kw:"",example:false,frames:[{role:"Hook",pos:"top",text:""},{role:"Amplifier",pos:"top",text:""},{role:"Value",pos:"top",text:""},{role:"Ask",pos:"top",text:""}]}}
+function examplePlan(){return {example:true,rows:[
+ {day:"Mon",type:"Documentation",about:"Behind the scenes of a client shoot day",hook:"Recency",amp:"Visual",end:"No ask",kw:""},
+ {day:"Wed",type:"Value",about:"Why nobody replies to your stories, the 4 steps",hook:"Relevancy",amp:"Negative assumption",end:"Free thing on a keyword",kw:"STORY"},
+ {day:"Fri",type:"Limiting belief",about:"\"I don't have time for content\"",hook:"Relevancy",amp:"Killing expectations",end:"Offer on a keyword",kw:"WEEKEND"}
+]}}
+function blankPlan(){return {example:false,rows:[
+ {day:"Mon",type:"Documentation",about:"",hook:"",amp:"",end:"No ask",kw:""},
+ {day:"Wed",type:"Value",about:"",hook:"",amp:"",end:"Free thing on a keyword",kw:""},
+ {day:"Fri",type:"Limiting belief",about:"",hook:"",amp:"",end:"Offer on a keyword",kw:""}
+]}}
+var S={b:exampleBuilder(),plan:examplePlan(),cl:[]};
+var photos=[]; // in memory only, parallel to S.b.frames
+var cur=0, storeOK=true;
+try{var raw=localStorage.getItem(KEY); if(raw){var d=JSON.parse(raw); if(d&&d.b&&d.plan) S=sanitize(d)}}catch(e){storeOK=false}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify({app:APP,v:1,saved:new Date().toISOString(),b:S.b,plan:S.plan,cl:S.cl}))}catch(e){storeOK=false}
+}
+function str(v,max){return typeof v==="string"?v.slice(0,max||4000):""}
+function pick(v,list,def){return list.indexOf(v)>=0?v:def}
+function sanitize(d){
+  var out={b:{type:pick(d.b.type,TYPES,"Value"),kw:str(d.b.kw,40),example:!!d.b.example,frames:[]},plan:{example:!!d.plan.example,rows:[]},cl:[]};
+  (Array.isArray(d.b.frames)?d.b.frames:[]).slice(0,15).forEach(function(f){f=f||{};out.b.frames.push({role:pick(f.role,ROLES,""),pos:pick(f.pos,["top","mid","bot"],"top"),text:str(f.text,1200)})});
+  if(!out.b.frames.length) out.b.frames=blankBuilder().frames;
+  var rows=Array.isArray(d.plan.rows)?d.plan.rows:[];
+  for(var i=0;i<3;i++){var r=rows[i]||{}; out.plan.rows.push({day:pick(r.day,DAYS,["Mon","Wed","Fri"][i]),type:pick(r.type,TYPES,"Value"),about:str(r.about,300),hook:pick(r.hook,HOOKS.map(function(x){return x[0]}),""),amp:pick(r.amp,AMPS.map(function(x){return x[0]}),""),end:pick(r.end,ENDS,"No ask"),kw:str(r.kw,40)})}
+  for(var k=0;k<10;k++) out.cl.push(!!(Array.isArray(d.cl)&&d.cl[k]));
+  return out;
+}
+
+/* ---------- builder ---------- */
+function opts(list,sel,blank){return (blank?'<option value="">'+blank+'</option>':"")+list.map(function(o){var v=Array.isArray(o)?o[0]:o,l=Array.isArray(o)?o[1]:o;return '<option value="'+esc(v)+'"'+(v===sel?" selected":"")+'>'+esc(l)+'</option>'}).join("")}
+function buildRows(){
+  var n=S.b.frames.length;
+  $("#frows").innerHTML=S.b.frames.map(function(f,i){
+    return '<div class="frow'+(i===cur?" cur":"")+'" data-i="'+i+'">'+
+      '<div class="top"><span class="fn">'+(i+1)+'</span>'+
+      '<label class="vh" for="f-role-'+i+'">Frame '+(i+1)+' job</label><select id="f-role-'+i+'" data-f="role">'+opts(ROLES,f.role,"Job")+'</select>'+
+      '<label class="vh" for="f-pos-'+i+'">Frame '+(i+1)+' text position</label><select class="pos" id="f-pos-'+i+'" data-f="pos">'+opts([["top","Text at top"],["mid","Text in middle"],["bot","Text at bottom"]],f.pos)+'</select>'+
+      '<span class="tools"><button class="btn icon small" type="button" data-mv="-1" aria-label="Move frame '+(i+1)+' up"'+(i===0?" disabled":"")+'>&uarr;</button><button class="btn icon small" type="button" data-del aria-label="Remove frame '+(i+1)+'"'+(n<=1?" disabled":"")+'>&times;</button></span></div>'+
+      '<label class="vh" for="f-text-'+i+'">Frame '+(i+1)+' text</label><textarea id="f-text-'+i+'" data-f="text" placeholder="'+(i===0?"! The line that stops them\nOne thought per line":"One thought per line\nEnd on ...")+'">'+esc(f.text)+'</textarea>'+
+      '<div class="ph"><input type="file" accept="image/*" id="f-ph-'+i+'" data-photo><label for="f-ph-'+i+'">'+(photos[i]?"Change photo":"Add a photo")+'</label>'+(photos[i]?'<button class="btn small" type="button" data-rmph>Remove photo</button>':'<span>Optional. See your words on your own shot.</span>')+'</div>'+
+    '</div>';
+  }).join("");
+}
+function renderPreview(){
+  var fr=S.b.frames, n=fr.length; if(cur>=n) cur=n-1; if(cur<0) cur=0;
+  var f={text:fr[cur].text,pos:fr[cur].pos,photo:photos[cur]};
+  $("#pv").innerHTML=phoneHTML(f,cur,n,{bars:true,emptyText:"Write frame "+(cur+1)+" and it shows up here"})+'<button class="tapzone l" type="button" aria-label="Previous frame" data-step="-1"></button><button class="tapzone r" type="button" aria-label="Next frame" data-step="1"></button>';
+  $("#pv-lab").innerHTML="Frame <b>"+(cur+1)+"</b> of "+n+(fr[cur].role?" · "+esc(fr[cur].role):"");
+  $("#pv-prev").disabled=cur===0; $("#pv-next").disabled=cur===n-1;
+  $("#thumbs").innerHTML=fr.map(function(x,i){return '<button type="button" data-go="'+i+'" aria-label="Frame '+(i+1)+'" aria-current="'+(i===cur)+'"><span class="phone" style="display:block">'+phoneHTML({text:x.text,pos:x.pos,photo:photos[i]},i,n,{emptyText:""})+'</span></button>'}).join("");
+  $$(".frow").forEach(function(r){r.classList.toggle("cur",+r.dataset.i===cur)});
+}
+function runChecks(){
+  var fr=S.b.frames, n=fr.length, type=S.b.type, kw=S.b.kw.trim(), L=[];
+  function add(ok,yes,no){L.push([ok,ok?yes:no])}
+  var roles=fr.map(function(f){return f.role});
+  add(roles[0]==="Hook","Frame 1 is the hook.","Frame 1 should be the hook. That's the frame that stops them.");
+  var amp=roles.indexOf("Amplifier");
+  add(amp>0&&amp<=2,"Reason to keep tapping on frame "+(amp+1)+".",amp<0?"No amplifier yet. Put one on frame 2 or 3.":(amp===0?"The amplifier can't be frame 1. Put it on frame 2 or 3.":"The amplifier is on frame "+(amp+1)+". Move it to frame 2 or 3, never later."));
+  var hasVal=roles.some(function(r){return r==="Value"||r==="Story"||r==="Proof"});
+  add(hasVal,"There's a payoff before the end.","No value frame yet. Give them the payoff before you ask.");
+  var asks=roles.filter(function(r){return r==="Ask"}).length;
+  if(type==="Documentation") add(!asks,"Documentation, no ask. Right.","Documentation stories don't ask. Drop the ask or change the type.");
+  else {
+    add(asks===1&&roles[n-1]==="Ask",asks?"One ask, on the last frame.":"",asks>1?"One ask per story. You have "+asks+".":(asks===0?"No ask yet. Make the last frame the ask, or switch to Documentation.":"Put the ask on the last frame."));
+    if(asks){var last=fr[n-1].text||""; add(!!kw&&last.toUpperCase().indexOf(kw.toUpperCase())>=0,"The ask uses your keyword, "+kw.toUpperCase()+".",!kw?"Set the keyword they reply with.":"Put \""+kw.toUpperCase()+"\" in the last frame so they know what to reply.")}
+  }
+  var noDots=[];
+  fr.forEach(function(f,i){ if(i<n-1){var t=String(f.text||"").trim(); if(t&&!/\.\.\.$|…$/.test(t)) noDots.push(i+1)} });
+  add(!noDots.length,"Every frame but the last ends on \"...\".","Frame"+(noDots.length>1?"s ":" ")+noDots.join(", ")+(noDots.length>1?" don't":" doesn't")+" end on \"...\". Leave the thought open.");
+  var heavy=[],bright=[],longb=[],empty=[];
+  fr.forEach(function(f,i){
+    var p=parseFrame(f.text), all=p.top.concat(p.bottom);
+    if(!all.length) empty.push(i+1);
+    if(all.length>5) heavy.push(i+1);
+    var hot=all.filter(function(l){return l.kind==="hot"}).length, acc=all.filter(function(l){return l.kind==="acc"}).length;
+    if(hot>1||acc>1) bright.push(i+1);
+    if(all.some(function(l){return l.text.replace(/\[|\]/g,"").length>70})) longb.push(i+1);
+  });
+  add(!empty.length,"Every frame has words.","Frame"+(empty.length>1?"s ":" ")+empty.join(", ")+(empty.length>1?" are":" is")+" empty.");
+  add(!heavy.length,"Five boxes or fewer on every frame.","Too many boxes on frame "+heavy.join(", ")+". Five max.");
+  add(!bright.length,"One red box and one white box per frame, max.","Frame "+bright.join(", ")+" has more than one red or white box. One of each, max.");
+  add(!longb.length,"Every box is one thought.","A box on frame "+longb.join(", ")+" is long. Split it into two thoughts.");
+  add(n>=3&&n<=10,n+" frames. Good length.",n<3?"Fewer than 3 frames. There's no room for the four jobs.":n+" frames is a lot. Cut to 10 or fewer.");
+  var ok=L.filter(function(x){return x[0]}).length;
+  $("#score").textContent=ok+"/"+L.length;
+  L.sort(function(a,b){return a[0]-b[0]});
+  $("#checks").innerHTML=L.map(function(x){return '<li class="'+(x[0]?"ok":"")+'">'+esc(x[1])+'</li>'}).join("");
+}
+function renderBuilder(){
+  $("#b-type").value=S.b.type; $("#b-kw").value=S.b.kw;
+  $("#exbanner").hidden=!S.b.example;
+  buildRows(); renderPreview(); runChecks();
+}
+function touchBuilder(){ if(S.b.example){S.b.example=false;$("#exbanner").hidden=true} save(); renderPreview(); runChecks() }
+$("#b-type").addEventListener("change",function(){S.b.type=this.value;touchBuilder()});
+$("#b-kw").addEventListener("input",function(){S.b.kw=this.value;touchBuilder()});
+$("#frows").addEventListener("input",function(e){
+  var row=e.target.closest(".frow"); if(!row||!e.target.dataset.f) return;
+  var i=+row.dataset.i; S.b.frames[i][e.target.dataset.f]=e.target.value; cur=i; touchBuilder();
+});
+$("#frows").addEventListener("change",function(e){
+  var row=e.target.closest(".frow"); if(!row) return; var i=+row.dataset.i;
+  if(e.target.dataset.f){S.b.frames[i][e.target.dataset.f]=e.target.value;cur=i;touchBuilder();return}
+  if(e.target.hasAttribute("data-photo")){
+    var file=e.target.files&&e.target.files[0]; if(!file) return;
+    loadPhoto(file,function(url){photos[i]=url;cur=i;buildRows();renderPreview()});
+  }
+});
+$("#frows").addEventListener("focusin",function(e){var row=e.target.closest(".frow"); if(row&&+row.dataset.i!==cur){cur=+row.dataset.i;renderPreview()}});
+$("#frows").addEventListener("click",function(e){
+  var row=e.target.closest(".frow"); if(!row) return; var i=+row.dataset.i;
+  if(e.target.closest("[data-del]")){S.b.frames.splice(i,1);photos.splice(i,1);if(cur>=S.b.frames.length)cur=S.b.frames.length-1;buildRows();touchBuilder();return}
+  var mv=e.target.closest("[data-mv]");
+  if(mv&&i>0){var t=S.b.frames[i];S.b.frames[i]=S.b.frames[i-1];S.b.frames[i-1]=t;var p=photos[i];photos[i]=photos[i-1];photos[i-1]=p;cur=i-1;buildRows();touchBuilder();var b=$('.frow[data-i="'+cur+'"] [data-mv]');if(b&&!b.disabled)b.focus();return}
+  if(e.target.closest("[data-rmph]")){photos[i]=null;buildRows();renderPreview()}
+});
+function loadPhoto(file,cb){
+  var r=new FileReader();
+  r.onload=function(){
+    var img=new Image();
+    img.onload=function(){
+      try{var w=540,h=Math.round(img.height*540/img.width),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);cb(c.toDataURL("image/jpeg",.82))}catch(e){cb(r.result)}
+    };
+    img.onerror=function(){};
+    img.src=r.result;
+  };
+  r.readAsDataURL(file);
+}
+function step(d){var n=S.b.frames.length;cur=Math.max(0,Math.min(n-1,cur+d));renderPreview()}
+$("#pv-prev").addEventListener("click",function(){step(-1)});
+$("#pv-next").addEventListener("click",function(){step(1)});
+$("#pv").addEventListener("click",function(e){var b=e.target.closest("[data-step]");if(b)step(+b.dataset.step)});
+$("#thumbs").addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){cur=+b.dataset.go;renderPreview()}});
+$("#b-add").addEventListener("click",function(){
+  if(S.b.frames.length>=15) return;
+  var n=S.b.frames.length; S.b.frames.push({role:"",pos:"top",text:""}); photos.push(null); cur=n; buildRows(); touchBuilder();
+  var t=$("#f-text-"+n); if(t) t.focus();
+});
+$("#b-blank").addEventListener("click",function(){S.b=blankBuilder();photos=[];cur=0;save();renderBuilder()});
+$("#b-clear").addEventListener("click",function(){$("#b-clear-confirm").hidden=false});
+$("#b-clear-no").addEventListener("click",function(){$("#b-clear-confirm").hidden=true});
+$("#b-clear-yes").addEventListener("click",function(){S.b=blankBuilder();photos=[];cur=0;save();renderBuilder();$("#b-clear-confirm").hidden=true});
+
+/* ---------- planner ---------- */
+var HN=HOOKS.map(function(x){return x[0]}), AN=AMPS.map(function(x){return x[0]}).filter(function(v,i,a){return a.indexOf(v)===i});
+function buildPlan(){
+  $("#plbanner").hidden=!S.plan.example;
+  $("#plan").innerHTML=S.plan.rows.map(function(r,i){
+    var p="p"+i+"-";
+    return '<div class="pcard" data-i="'+i+'"><div class="hd"><h3>Story '+(i+1)+'</h3><label class="vh" for="'+p+'day">Story '+(i+1)+' day</label><select id="'+p+'day" data-k="day">'+opts(DAYS,r.day)+'</select></div>'+
+     '<div><label class="l" for="'+p+'type">Type</label><select id="'+p+'type" data-k="type">'+opts(TYPES,r.type)+'</select></div>'+
+     '<div><label class="l" for="'+p+'about">What it\'s about</label><input type="text" id="'+p+'about" data-k="about" value="'+esc(r.about)+'" placeholder="One line"></div>'+
+     '<div class="two"><div><label class="l" for="'+p+'hook">Hook</label><select id="'+p+'hook" data-k="hook">'+opts(HN,r.hook,"Pick one")+'</select></div>'+
+     '<div><label class="l" for="'+p+'amp">Amplifier</label><select id="'+p+'amp" data-k="amp">'+opts(AN,r.amp,"Pick one")+'</select></div></div>'+
+     '<div class="two"><div><label class="l" for="'+p+'end">Ends on</label><select id="'+p+'end" data-k="end">'+opts(ENDS,r.end)+'</select></div>'+
+     '<div><label class="l" for="'+p+'kw">Keyword</label><input type="text" id="'+p+'kw" data-k="kw" value="'+esc(r.kw)+'" placeholder="'+(r.end==="No ask"?"None needed":"e.g. READY")+'"'+(r.end==="No ask"?" disabled":"")+'></div></div>'+
+    '</div>';
+  }).join("");
+  planChecks();
+}
+function planChecks(){
+  var R=S.plan.rows, L=[];
+  function add(ok,yes,no){L.push([ok,ok?yes:no])}
+  var types=R.map(function(r){return r.type}).filter(function(v,i,a){return a.indexOf(v)===i});
+  add(types.length>=2,"The types rotate.","All three are the same type. Rotate them.");
+  var offers=R.filter(function(r){return r.end==="Offer on a keyword"}).length;
+  add(offers<=1,offers?"One sale ask this week.":"No sale ask this week. Fine, but one story can ask.",offers+" stories ask for the sale. Keep it to one.");
+  var docAsk=R.filter(function(r){return r.type==="Documentation"&&r.end!=="No ask"}).length;
+  add(!docAsk,"Documentation stays ask-free.","A documentation story is asking. Drop the ask.");
+  var asking=R.filter(function(r){return r.end!=="No ask"}), missing=asking.filter(function(r){return !r.kw.trim()}).length;
+  add(!missing,"Every ask has a keyword.","A story that asks has no keyword yet.");
+  var kws=asking.map(function(r){return r.kw.trim().toUpperCase()}).filter(Boolean);
+  add(kws.length===kws.filter(function(v,i,a){return a.indexOf(v)===i}).length,"A different keyword each time.","Two stories use the same keyword. Give each ask its own word.");
+  var days=R.map(function(r){return r.day});
+  add(days.length===days.filter(function(v,i,a){return a.indexOf(v)===i}).length,"Three different days.","Two stories are on the same day. Spread them out.");
+  var gaps=R.filter(function(r){return !r.hook||!r.amp}).length;
+  add(!gaps,"Each one has a hook and an amplifier.","Pick a hook and an amplifier for every story.");
+  L.sort(function(a,b){return a[0]-b[0]});
+  $("#pchecks").innerHTML=L.map(function(x){return '<li class="'+(x[0]?"ok":"")+'">'+esc(x[1])+'</li>'}).join("");
+}
+function touchPlan(){if(S.plan.example){S.plan.example=false;$("#plbanner").hidden=true}save();planChecks()}
+$("#plan").addEventListener("input",function(e){var c=e.target.closest(".pcard");if(!c||!e.target.dataset.k)return;S.plan.rows[+c.dataset.i][e.target.dataset.k]=e.target.value;touchPlan()});
+$("#plan").addEventListener("change",function(e){var c=e.target.closest(".pcard");if(!c||!e.target.dataset.k)return;var i=+c.dataset.i,k=e.target.dataset.k;S.plan.rows[i][k]=e.target.value;
+  if(k==="end"){var kw=$("#p"+i+"-kw");kw.disabled=e.target.value==="No ask";kw.placeholder=kw.disabled?"None needed":"e.g. READY";if(kw.disabled){kw.value="";S.plan.rows[i].kw=""}}
+  touchPlan()});
+$("#p-blank").addEventListener("click",function(){S.plan=blankPlan();save();buildPlan()});
+
+/* ---------- checklist ---------- */
+function buildCL(){
+  $("#cl").innerHTML=CHECKS.map(function(c,i){return '<li><label for="cl-'+i+'"><span class="n">'+(i<9?"0":"")+(i+1)+'</span><input type="checkbox" id="cl-'+i+'" data-c="'+i+'"'+(S.cl[i]?" checked":"")+'><span><b>'+esc(c[0])+'</b>'+(c[1]?'<small>'+esc(c[1])+'</small>':"")+'</span></label></li>'}).join("");
+}
+$("#cl").addEventListener("change",function(e){if(e.target.dataset.c!=null){S.cl[+e.target.dataset.c]=e.target.checked;save()}});
+$("#cl-reset").addEventListener("click",function(){S.cl=[];save();buildCL()});
+
+/* ---------- keep: download, copy, load ---------- */
+var MARK="== load back data, keep this line and everything under it ==";
+function strip(t){return String(t||"").replace(/\[\[|\]\]|\[|\]/g,"").replace(/^[!*]\s*/gm,"")}
+function exportText(){
+  var o=[],b=S.b,R=S.plan.rows;
+  o.push("MY STORY SEQUENCES","Made with the Story Sequence Kit, WellSetMedia","");
+  o.push("THE STORY","Type: "+b.type+(b.kw?"   Keyword: "+b.kw.toUpperCase():""),"");
+  b.frames.forEach(function(f,i){
+    o.push("Frame "+(i+1)+(f.role?" ("+f.role+")":"")+", text "+({top:"at top",mid:"in middle",bot:"at bottom"}[f.pos]||"at top"));
+    var t=strip(f.text).split("\n").map(function(x){return x.trim()}).filter(function(x,j,a){return x||(j>0&&a[j-1])});
+    o.push(t.length?t.map(function(x){return x?"  "+x:"  (then at the bottom)"}).join("\n"):"  (empty)","");
+  });
+  o.push("THE WEEK");
+  R.forEach(function(r){o.push(r.day+": "+r.type+(r.about?", "+r.about:"")+(r.hook?". Hook: "+r.hook:"")+(r.amp?". Amplifier: "+r.amp:"")+". "+r.end+(r.kw?" ("+r.kw.toUpperCase()+")":""))});
+  o.push("","BEFORE YOU POST");
+  CHECKS.forEach(function(c,i){o.push("["+(S.cl[i]?"x":" ")+"] "+c[0])});
+  o.push("","",MARK,JSON.stringify({app:APP,v:1,saved:new Date().toISOString(),b:S.b,plan:S.plan,cl:S.cl}));
+  return o.join("\n");
+}
+function setStatus(sel,msg,err){var el=$(sel);el.textContent=msg;el.classList.toggle("err",!!err)}
+function showFallback(msg){$("#fb").hidden=false;$("#fb-text").value=exportText();setStatus("#dl-status",msg,true)}
+var dlP=null;
+function getDownloads(){if(!dlP){dlP=(window.claude&&typeof window.claude.use==="function")?Promise.resolve(window.claude.use("downloads")).catch(function(){return null}):Promise.resolve(null)}return dlP}
+$("#dl").addEventListener("click",function(){
+  var data=exportText();
+  setStatus("#dl-status","Getting your file ready...");
+  getDownloads().then(function(dl){
+    if(!dl){showFallback("Downloads aren't available here. Your stories are below to copy instead.");return}
+    return dl.save({filename:"my-story-sequences.txt",data:data}).then(function(r){
+      setStatus("#dl-status",r&&r.status==="delivered"?"Sent.":"Saved as my-story-sequences.txt.");
+    },function(err){
+      var c=err&&err.code;
+      if(c==="declined") setStatus("#dl-status","Download cancelled. Nothing was saved.");
+      else if(c==="rate_limited") setStatus("#dl-status","A save prompt is already open. Finish that one, then try again.",true);
+      else showFallback("That download didn't work here. Your stories are below to copy instead.");
+    });
+  });
+});
+$("#cp").addEventListener("click",function(){
+  var ta=$("#fb-text"); $("#fb").hidden=false; ta.value=exportText();
+  function sel(){ta.focus();ta.select();setStatus("#dl-status","Selected. Copy it with your keyboard.")}
+  try{navigator.clipboard.writeText(ta.value).then(function(){setStatus("#dl-status","Copied. Paste it into a note to keep it.")},sel)}catch(e){sel()}
+});
+function parseImport(text){
+  text=String(text||"").trim(); var j=text;
+  var at=text.indexOf(MARK); if(at>=0) j=text.slice(at+MARK.length).trim();
+  if(j.charAt(0)!=="{") throw new Error("nofile");
+  var obj=JSON.parse(j);
+  if(!obj||obj.app!==APP||!obj.b||!obj.plan) throw new Error("notours");
+  return sanitize(obj);
+}
+function applyImport(s){S=s;photos=[];cur=0;save();renderAll();setStatus("#imp-status","Loaded. Your stories are back.")}
+function importErr(e){setStatus("#imp-status",e&&e.message==="notours"?"That file isn't from this kit. Pick the file you downloaded here.":"Couldn't read that. Pick the text file you downloaded from this kit, or paste all of it.",true)}
+$("#imp-file").addEventListener("change",function(e){
+  var file=e.target.files&&e.target.files[0]; if(!file) return;
+  var r=new FileReader();
+  r.onload=function(){try{applyImport(parseImport(r.result))}catch(err){importErr(err)} e.target.value=""};
+  r.onerror=function(){importErr()};
+  r.readAsText(file);
+});
+$("#imp-go").addEventListener("click",function(){try{applyImport(parseImport($("#imp-paste").value));$("#imp-paste").value=""}catch(err){importErr(err)}});
+
+/* ---------- strip progress ---------- */
+var secs=$$("main .sec"), segs=$$("#segs a i"), ticking=false;
+function onScroll(){
+  ticking=false; var vh=window.innerHeight, title="";
+  secs.forEach(function(s,i){
+    var r=s.getBoundingClientRect(), p=(vh*0.35-r.top)/Math.max(1,r.height);
+    p=Math.max(0,Math.min(1,p)); segs[i].style.width=(p*100)+"%";
+    if(r.top<vh*0.35&&r.bottom>vh*0.35) title=s.dataset.title;
+  });
+  $("#now").innerHTML=title?'<b>'+esc(title)+'</b>':'<b>Story Sequence Kit</b>';
+}
+window.addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+window.addEventListener("resize",onScroll);
+
+function renderAll(){renderBuilder();buildPlan();buildCL()}
+renderAll(); onScroll();
+if(!storeOK) setStatus("#dl-status","This browser isn't letting the page save. Download your stories before you close it.",true);
+})();
+</script>
